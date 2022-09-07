@@ -19,7 +19,7 @@ export default function useApi (url: string) {
     }
   }
 
-  const save = async (payload: any) => {
+  const post = async (payload: any) => {
     try {
       const { data } = await api.post(url, payload)
       return data
@@ -28,7 +28,7 @@ export default function useApi (url: string) {
     }
   }
 
-  const update = async (id: number, payload: any) => {
+  const put = async (id: number, payload: any) => {
     try {
       const { data } = await api.put(`${url}/${id}`, payload)
       return data
@@ -48,8 +48,9 @@ export default function useApi (url: string) {
 
   return {
     all,
-    save,
-    update,
+    get,
+    post,
+    put,
     remove
   }
 }

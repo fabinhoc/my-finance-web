@@ -21,7 +21,7 @@
         <SelectLanguage />
 
         <q-btn icon="account_circle" flat round />
-        <q-btn icon="logout" flat round aria-label="Logout" />
+        <q-btn icon="logout" flat round aria-label="Logout" @click="handleLogout" />
       </q-toolbar>
     </q-header>
 
@@ -66,6 +66,8 @@
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
 import SelectLanguage from 'src/components/SelectLanguage.vue';
+import useAuthService from 'src/services/auth.service';
+import { useRouter } from 'vue-router';
 
 const linksList = [
   {
@@ -122,13 +124,24 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
+    const authService = useAuthService()
+    const router = useRouter()
+
+    const handleLogout = async () => {
+      const response: any = await authService.logout()
+
+      if (response.revoked) {
+        router.push({ name: 'login' })
+      }
+    }
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      handleLogout
     }
   }
 });
