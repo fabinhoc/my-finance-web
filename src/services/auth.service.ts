@@ -1,38 +1,49 @@
-import { api } from "src/boot/axios"
-import { useAuthStore } from "src/stores/auth.store"
-import { LoginType } from "src/types/Login.type"
-import { storeToRefs } from 'pinia'
+import { api } from 'src/boot/axios';
+import { useAuthStore } from 'src/stores/auth.store';
+import { LoginType } from 'src/types/Login.type';
+import { storeToRefs } from 'pinia';
+import { RegisterType } from 'src/types/Register.type';
+import { UserType } from 'src/types/User.type';
 
-export default function useAuthService () {
+export default function useAuthService() {
   const login = async (payload: LoginType) => {
     try {
-      const { token } = storeToRefs(useAuthStore())
-      const { authenticate } = useAuthStore()
+      const { token } = storeToRefs(useAuthStore());
+      const { authenticate } = useAuthStore();
 
-      await authenticate(payload)
+      await authenticate(payload);
 
-      api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
 
-      return true
+      return true;
     } catch (error: any) {
-      throw new Error(error)
+      throw new Error(error);
     }
-  }
+  };
 
   const logout = async () => {
-    const { logout } = useAuthStore()
+    const { logout } = useAuthStore();
 
-    const { data } = await logout()
+    const { data } = await logout();
 
     if (data?.revoked) {
-      api.defaults.headers.common['Authorization'] = ''
+      api.defaults.headers.common['Authorization'] = '';
     }
 
-    return data
-  }
+    return data;
+  };
+
+  const register = async (payload: RegisterType) => {
+    const { register } = useAuthStore();
+
+    const user: UserType = await register(payload);
+
+    return user;
+  };
 
   return {
     login,
-    logout
-  }
+    logout,
+    register,
+  };
 }

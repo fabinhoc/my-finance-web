@@ -4,15 +4,37 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/auth',
     component: () => import('layouts/LoginLayout.vue'),
-    children: [{ path: 'login', name: 'login', component: () => import('pages/LoginPage.vue') }],
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('src/pages/Login.page.vue'),
+      },
+      {
+        path: 'forgot-password',
+        name: 'forgot-password',
+        component: () => import('src/pages/ForgotPassword.page.vue'),
+      },
+      {
+        path: 'sign-up',
+        name: 'sign-up',
+        component: () => import('src/pages/SignUp.page.vue'),
+      },
+    ],
   },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'dashboard', name: 'dashboard', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('src/pages/Index.page.vue'),
+      },
+    ],
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
 
   // Always leave this as last one,
