@@ -51,11 +51,17 @@
             {{ $t('menu.notebooks') }}
           </q-item-label>
 
-          <EssentialLink
-            v-for="link in essentialLinks"
-            :key="link.title"
-            v-bind="link"
+          <MenuNotebook
+            v-for="notebook in notebooks"
+            :key="notebook.id"
+            v-bind="notebook"
           />
+
+          <!-- <EssentialLink
+            v-for="link in notebooks"
+            :key="link.name"
+            v-bind="link"
+          /> -->
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -67,12 +73,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import SelectLanguage from 'src/components/SelectLanguage.vue';
 import useAuthService from 'src/services/auth.service';
+import useNotebookService from 'src/services/Notebook.service';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth.store';
+import { NotebookType } from 'src/types/Notebook.type';
+import MenuNotebook from 'src/components/MenuNotebook.vue';
 
 const linksList = [
   {
@@ -123,8 +131,8 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink,
     SelectLanguage,
+    MenuNotebook,
   },
 
   setup() {
@@ -132,11 +140,17 @@ export default defineComponent({
     const authService = useAuthService();
     const router = useRouter();
     const { user } = useAuthStore();
+    const notebookService = useNotebookService();
+    let notebooks = ref<NotebookType[]>([]);
 
     const handleLogout = async () => {
       await authService.logout();
       router.push({ name: 'login' });
     };
+
+    onMounted(async () => {
+      notebooks.value = await notebookService.all();
+    });
 
     return {
       essentialLinks: linksList,
@@ -146,6 +160,7 @@ export default defineComponent({
       },
       handleLogout,
       user,
+      notebooks,
     };
   },
 });
