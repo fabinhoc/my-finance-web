@@ -8,7 +8,7 @@ export default {
     projectName: 'My Finances',
   },
   menu: {
-    notebooks: 'My Notebooks',
+    notebooks: 'Notebooks',
   },
   page: {
     login: {

@@ -41,20 +41,14 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
+          <div class="text-weight-bold">{{ user.name }}</div>
+          <div>{{ user.email }}</div>
         </div>
       </q-img>
-      <q-scroll-area
-        style="
-          height: calc(100% - 150px);
-          margin-top: 150px;
-          border-right: 1px solid #ddd;
-        "
-      >
+      <q-scroll-area class="scroll-area">
         <q-list>
           <q-item-label header>
-            {{ $t('menu.notebook') }}
+            {{ $t('menu.notebooks') }}
           </q-item-label>
 
           <EssentialLink
@@ -78,6 +72,7 @@ import EssentialLink from 'components/EssentialLink.vue';
 import SelectLanguage from 'src/components/SelectLanguage.vue';
 import useAuthService from 'src/services/auth.service';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth.store';
 
 const linksList = [
   {
@@ -136,6 +131,7 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const authService = useAuthService();
     const router = useRouter();
+    const { user } = useAuthStore();
 
     const handleLogout = async () => {
       await authService.logout();
@@ -149,7 +145,16 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       handleLogout,
+      user,
     };
   },
 });
 </script>
+
+<style scoped>
+.scroll-area {
+  height: calc(100% - 150px);
+  margin-top: 150px;
+  border-right: 1px solid #ddd;
+}
+</style>

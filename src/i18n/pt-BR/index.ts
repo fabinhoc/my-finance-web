@@ -8,7 +8,7 @@ export default {
     projectName: 'Minhas Finanças',
   },
   menu: {
-    notebook: 'Meus Cadernos',
+    notebooks: 'Meus Cadernos',
   },
   page: {
     login: {

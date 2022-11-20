@@ -7,9 +7,9 @@ import { UserType } from 'src/types/User.type';
 
 export const useAuthStore = defineStore('login', {
   state: () => ({
-    user:
-      localStorage.getItem('user') ??
-      (JSON.parse(localStorage.getItem('user') as string) as UserType),
+    user: localStorage.getItem('user')
+      ? (JSON.parse(localStorage.getItem('user') as string) as UserType)
+      : ({} as UserType),
     token: localStorage.getItem('token') as string,
   }),
   actions: {
