@@ -21,32 +21,42 @@
         <SelectLanguage />
 
         <q-btn icon="account_circle" flat round />
-        <q-btn icon="logout" flat round aria-label="Logout" @click="handleLogout" />
+        <q-btn
+          icon="logout"
+          flat
+          round
+          aria-label="Logout"
+          @click="handleLogout"
+        />
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-img class="absolute-top" src="/src/assets/bg-user.png" style="height: 150px">
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+      <q-img
+        class="absolute-top"
+        src="/src/assets/bg-user.png"
+        style="height: 150px"
+      >
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
           <div class="text-weight-bold">Razvan Stoenescu</div>
           <div>@rstoenescu</div>
         </div>
       </q-img>
-      <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+      <q-scroll-area
+        style="
+          height: calc(100% - 150px);
+          margin-top: 150px;
+          border-right: 1px solid #ddd;
+        "
+      >
         <q-list>
-          <q-item-label
-            header
-          >
+          <q-item-label header>
             {{ $t('menu.notebook') }}
           </q-item-label>
-  
+
           <EssentialLink
             v-for="link in essentialLinks"
             :key="link.title"
@@ -74,44 +84,44 @@ const linksList = [
     title: 'Docs',
     caption: 'quasar.dev',
     icon: 'school',
-    link: 'https://quasar.dev'
+    link: 'https://quasar.dev',
   },
   {
     title: 'Github',
     caption: 'github.com/quasarframework',
     icon: 'code',
-    link: 'https://github.com/quasarframework'
+    link: 'https://github.com/quasarframework',
   },
   {
     title: 'Discord Chat Channel',
     caption: 'chat.quasar.dev',
     icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    link: 'https://chat.quasar.dev',
   },
   {
     title: 'Forum',
     caption: 'forum.quasar.dev',
     icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    link: 'https://forum.quasar.dev',
   },
   {
     title: 'Twitter',
     caption: '@quasarframework',
     icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    link: 'https://twitter.quasar.dev',
   },
   {
     title: 'Facebook',
     caption: '@QuasarFramework',
     icon: 'public',
-    link: 'https://facebook.quasar.dev'
+    link: 'https://facebook.quasar.dev',
   },
   {
     title: 'Quasar Awesome',
     caption: 'Community Quasar projects',
     icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+    link: 'https://awesome.quasar.dev',
+  },
 ];
 
 export default defineComponent({
@@ -119,30 +129,27 @@ export default defineComponent({
 
   components: {
     EssentialLink,
-    SelectLanguage
-},
+    SelectLanguage,
+  },
 
-  setup () {
-    const leftDrawerOpen = ref(false)
-    const authService = useAuthService()
-    const router = useRouter()
+  setup() {
+    const leftDrawerOpen = ref(false);
+    const authService = useAuthService();
+    const router = useRouter();
 
     const handleLogout = async () => {
-      const response: any = await authService.logout()
-
-      if (response.revoked) {
-        router.push({ name: 'login' })
-      }
-    }
+      await authService.logout();
+      router.push({ name: 'login' });
+    };
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-      handleLogout
-    }
-  }
+      handleLogout,
+    };
+  },
 });
 </script>

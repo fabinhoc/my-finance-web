@@ -79,13 +79,17 @@
           class="full-width"
           color="primary"
         />
+
+        <q-btn color="accent" flat to="/auth/login">{{
+          $t('page.signUp.alreadyRegistered')
+        }}</q-btn>
       </q-form>
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import useAuthService from 'src/services/auth.service';
 import { RegisterType } from 'src/types/Register.type';
 import formValidation from 'boot/form/validations';
@@ -108,6 +112,7 @@ export default defineComponent({
           name: form.value.name,
           email: form.value.email,
           password: form.value.password,
+          password_confirmation: form.value.password_confirmation,
         } as RegisterType);
 
         console.log(response);

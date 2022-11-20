@@ -10,25 +10,19 @@ export default function useAuthService() {
     try {
       const { token } = storeToRefs(useAuthStore());
       const { authenticate } = useAuthStore();
-
       await authenticate(payload);
-
       api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
 
       return true;
     } catch (error: any) {
-      throw new Error(error);
+      throw error;
     }
   };
 
   const logout = async () => {
     const { logout } = useAuthStore();
-
     const { data } = await logout();
-
-    if (data?.revoked) {
-      api.defaults.headers.common['Authorization'] = '';
-    }
+    api.defaults.headers.common['Authorization'] = '';
 
     return data;
   };

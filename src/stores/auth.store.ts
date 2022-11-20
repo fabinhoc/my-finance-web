@@ -1,4 +1,3 @@
-import { STATEMENT_OR_BLOCK_KEYS } from '@babel/types';
 import { defineStore } from 'pinia';
 import { api } from 'src/boot/axios';
 import useApi from 'src/composables/UseApi';
@@ -24,8 +23,8 @@ export const useAuthStore = defineStore('login', {
 
         localStorage.setItem('user', JSON.stringify(this.user));
         localStorage.setItem('token', this.token);
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (error: unknown | any) {
+        throw error;
       }
     },
 
@@ -37,9 +36,7 @@ export const useAuthStore = defineStore('login', {
             : ({} as UserType);
           this.token = this.user?.token;
         }
-
-        await api.get('isLogged');
-      } catch (error: any) {
+      } catch (error: unknown | any) {
         if (error.response.status === 401) {
           this.user = {} as UserType;
           this.token = '';
@@ -48,31 +45,30 @@ export const useAuthStore = defineStore('login', {
           localStorage.removeItem('token');
         }
 
-        throw new Error(error);
+        throw error;
       }
     },
 
     async logout() {
-      const response: any = await api.get('logout');
-
-      if (response?.revoked) {
+      try {
+        const response = await api.get('logout');
         this.user = {} as UserType;
         this.token = '';
-
         localStorage.removeItem('user');
         localStorage.removeItem('token');
-      }
 
-      return response;
+        return response;
+      } catch (error: any | unknown) {
+        throw error;
+      }
     },
 
     async register(payload: RegisterType) {
       try {
         const user: UserType = await api.post('register', payload);
-
         return user;
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (error: any | unknown) {
+        throw error;
       }
     },
   },

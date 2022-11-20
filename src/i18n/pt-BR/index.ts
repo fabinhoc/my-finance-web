@@ -24,6 +24,7 @@ export default {
       password: 'Senha',
       passwordConfirmation: 'Confirme a senha',
       register: 'Criar conta',
+      alreadyRegistered: 'Já está cadastrado?',
     },
   },
   validations: {

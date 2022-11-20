@@ -8,6 +8,7 @@
     map-options
     options-dense
     dark
+    @update:model-value="setLocale()"
   >
     <template v-slot:prepend>
       <q-icon name="translate" />
@@ -16,22 +17,28 @@
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n'
-import { Languages } from './models'
+import { api } from 'src/boot/axios';
+import { useI18n } from 'vue-i18n';
+import { Languages } from './models';
 
 export default {
-  setup () {
-    const { locale } = useI18n({ useScope: 'global' })
+  setup() {
+    const { locale } = useI18n({ useScope: 'global' });
 
     const localeOptions: Array<Languages> = [
       { value: 'pt-BR', label: 'Portuguese' },
-      { value: 'en-US', label: 'English' }
-    ]
+      { value: 'en-US', label: 'English' },
+    ];
+
+    const setLocale = () => {
+      api.defaults.headers.common['Accept-Language'] = locale.value;
+    };
 
     return {
       locale,
-      localeOptions
-    }
-  }
-}
+      localeOptions,
+      setLocale,
+    };
+  },
+};
 </script>

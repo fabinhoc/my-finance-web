@@ -6,7 +6,7 @@
         class="q-mb-lg"
         style="max-width: 100px"
       ></q-img>
-      <q-form class="q-gutter-y-lg" @submit.prevent="handleLogin">
+      <q-form ref="myForm" class="q-gutter-y-lg" @submit.prevent="handleLogin">
         <q-input
           autofocus
           v-model="form.email"
@@ -62,15 +62,17 @@
 <script lang="ts">
 import useAuthService from 'src/services/auth.service';
 import { LoginType } from 'src/types/Login.type';
-import { defineComponent, Ref, ref } from 'vue';
+import { defineComponent, Ref, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import formValidation from 'boot/form/validations';
+import useNotify from 'src/composables/UseNotify';
 
 export default defineComponent({
   name: 'LoginPage',
   setup() {
     const service = useAuthService();
     const router = useRouter();
+    const notify = useNotify();
 
     const form: Ref<LoginType> = ref({
       email: null,
@@ -79,13 +81,10 @@ export default defineComponent({
 
     const handleLogin = async () => {
       try {
-        const response = await service.login(form.value);
-
-        if (response) {
-          router.push({ name: 'dashboard' });
-        }
-      } catch (error) {
-        console.log(error);
+        await service.login(form.value);
+        router.push({ name: 'dashboard' });
+      } catch (error: any) {
+        notify.error(error.response.data.errors[0].message);
       }
     };
 

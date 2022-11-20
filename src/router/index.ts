@@ -21,7 +21,9 @@ import routes from './routes';
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
-    : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
+    : process.env.VUE_ROUTER_MODE === 'history'
+    ? createWebHistory
+    : createWebHashHistory;
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -34,22 +36,19 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   // check route is protected and is logged in
-  Router.beforeEach(async (to, from) => {
-    const auth = useAuthStore()
+  Router.beforeEach(async (to) => {
+    const auth = useAuthStore();
 
-    try {
-      await auth.loggedUser()
-    } catch {
-    }
+    console.log(auth.isLoggedIn);
 
     if (to.meta.requiresAuth && !auth.isLoggedIn) {
-      return {name: 'login'}
+      return { name: 'login' };
     }
 
     if (to.name === 'login' && auth.isLoggedIn) {
-      return {name: 'dashboard'}
+      return { name: 'dashboard' };
     }
-  })
+  });
 
   return Router;
 });

@@ -24,6 +24,7 @@ export default {
       password: 'Password',
       passwordConfirmation: 'Password Confirm',
       register: 'Register',
+      alreadyRegistered: 'Already registered?',
     },
   },
   validations: {
