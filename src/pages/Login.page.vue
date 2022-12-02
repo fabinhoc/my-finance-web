@@ -62,7 +62,7 @@
 <script lang="ts">
 import useAuthService from 'src/services/auth.service';
 import { LoginType } from 'src/types/Login.type';
-import { defineComponent, Ref, ref, watchEffect } from 'vue';
+import { defineComponent, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import formValidation from 'boot/form/validations';
 import useNotify from 'src/composables/UseNotify';
