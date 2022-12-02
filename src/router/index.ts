@@ -38,13 +38,9 @@ export default route(function (/* { store, ssrContext } */) {
   // check route is protected and is logged in
   Router.beforeEach(async (to) => {
     const auth = useAuthStore();
-
-    console.log(auth.isLoggedIn);
-
     if (to.meta.requiresAuth && !auth.isLoggedIn) {
       return { name: 'login' };
     }
-
     if (to.name === 'login' && auth.isLoggedIn) {
       return { name: 'dashboard' };
     }

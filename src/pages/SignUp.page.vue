@@ -108,14 +108,12 @@ export default defineComponent({
 
     const handleRegister = async () => {
       try {
-        const response = await service.register({
+        await service.register({
           name: form.value.name,
           email: form.value.email,
           password: form.value.password,
           password_confirmation: form.value.password_confirmation,
         } as RegisterType);
-
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
