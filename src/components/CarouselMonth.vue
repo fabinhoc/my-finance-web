@@ -25,63 +25,81 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { MonthType } from 'src/types/Month.type';
+import { useMonth } from 'src/stores/month.store';
+
+const months = [
+  {
+    monthInNumber: '01',
+    stringMonth: 'Janeiro',
+  },
+  {
+    monthInNumber: '02',
+    stringMonth: 'Fevereiro',
+  },
+  {
+    monthInNumber: '03',
+    stringMonth: 'Março',
+  },
+  {
+    monthInNumber: '04',
+    stringMonth: 'Abril',
+  },
+  {
+    monthInNumber: '05',
+    stringMonth: 'Maio',
+  },
+  {
+    monthInNumber: '06',
+    stringMonth: 'Junho',
+  },
+  {
+    monthInNumber: '07',
+    stringMonth: 'Julho',
+  },
+  {
+    monthInNumber: '08',
+    stringMonth: 'Agosto',
+  },
+  {
+    monthInNumber: '09',
+    stringMonth: 'Setembro',
+  },
+  {
+    monthInNumber: '10',
+    stringMonth: 'Outubro',
+  },
+  {
+    monthInNumber: '11',
+    stringMonth: 'Novembro',
+  },
+  {
+    monthInNumber: '12',
+    stringMonth: 'Dezembro',
+  },
+] as MonthType[];
 
 export default defineComponent({
   name: 'CarouselMonth',
   setup() {
     const slide = ref('11');
-    const months: Ref<MonthType[]> = ref([
-      {
-        monthInNumber: '01',
-        stringMonth: 'Janeiro',
-      },
-      {
-        monthInNumber: '02',
-        stringMonth: 'Fevereiro',
-      },
-      {
-        monthInNumber: '03',
-        stringMonth: 'Março',
-      },
-      {
-        monthInNumber: '04',
-        stringMonth: 'Abril',
-      },
-      {
-        monthInNumber: '05',
-        stringMonth: 'Maio',
-      },
-      {
-        monthInNumber: '06',
-        stringMonth: 'Junho',
-      },
-      {
-        monthInNumber: '07',
-        stringMonth: 'Julho',
-      },
-      {
-        monthInNumber: '08',
-        stringMonth: 'Agosto',
-      },
-      {
-        monthInNumber: '09',
-        stringMonth: 'Setembro',
-      },
-      {
-        monthInNumber: '10',
-        stringMonth: 'Outubro',
-      },
-      {
-        monthInNumber: '11',
-        stringMonth: 'Novembro',
-      },
-      {
-        monthInNumber: '12',
-        stringMonth: 'Dezembro',
-      },
-    ]);
+    const { setMonth } = useMonth();
+
+    onMounted(() => {
+      setMonthToStoreValue(slide.value);
+    });
+
+    watch(slide, (newValue) => {
+      setMonthToStoreValue(newValue);
+    });
+
+    const setMonthToStoreValue = (monthValueInNumber: string) => {
+      const selectedMonth = months.find(
+        (month) => month.monthInNumber === monthValueInNumber
+      );
+      setMonth(selectedMonth as MonthType);
+    };
 
     return {
       slide,
