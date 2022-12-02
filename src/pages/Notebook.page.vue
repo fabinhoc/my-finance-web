@@ -26,10 +26,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import CarouselYear from 'src/components/CarouselYear.vue';
 import CarouselMonth from 'src/components/CarouselMonth.vue';
 import NotebookPageCardTitle from 'src/components/NotebookPageCardTitle.vue';
+import { storeToRefs } from 'pinia';
+import { useMonth } from 'src/stores/month.store';
+import { useYear } from 'src/stores/year.store';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -40,6 +43,14 @@ export default defineComponent({
   },
   setup() {
     const slide = ref('style');
+    const { month } = storeToRefs(useMonth());
+    const { year } = storeToRefs(useYear());
+
+    watch([month, year], ([newMonthValue, newYearValue]) => {
+      console.log(newMonthValue);
+      console.log(newYearValue);
+    });
+
     return {
       slide,
     };
