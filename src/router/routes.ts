@@ -36,6 +36,17 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/notebooks',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: ':id/:name',
+        name: 'notebooks',
+        component: () => import('src/pages/Notebook.page.vue'),
+      },
+    ],
+  },
 
   // Always leave this as last one,
   // but you can also remove it
