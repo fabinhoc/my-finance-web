@@ -37,6 +37,13 @@ export default {
             actions: 'Ações',
             status: 'Status',
           },
+          tooltips: {
+            pending: 'Pendente',
+            paid: 'Pago',
+            markAsPaid: 'Marcar como pago',
+            edit: 'Editar',
+            remove: 'Excluir',
+          },
         },
       },
     },

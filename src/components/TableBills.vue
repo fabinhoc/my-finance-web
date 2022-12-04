@@ -15,7 +15,7 @@
       </q-tr>
     </template>
     <template v-slot:body="props">
-      <q-tr :props="props">
+      <TableBillsTr :propsRow="props" :expanded="false">
         <q-td auto-width>
           <q-btn
             v-if="props.row.tag_id"
@@ -27,39 +27,7 @@
             :icon="props.row.expand ? 'remove' : 'add'"
           />
         </q-td>
-        <q-td>
-          <q-badge rounded v-if="!props.row.isPaid" :color="'grey'" />
-          <span v-else class="text-primary">PG</span>
-        </q-td>
-        <q-td>
-          <q-icon
-            name="local_offer"
-            v-if="props.row.tag_id"
-            :style="'color:' + props.row.color + '!important;'"
-            class="q-mr-sm"
-          />
-          <span>{{ props.row.name }}</span>
-        </q-td>
-        <q-td>
-          {{ $d(props.row.due_date) }}
-        </q-td>
-        <q-td>
-          {{ $n(parseFloat(props.row.price), 'currency') }}
-        </q-td>
-        <q-td align="right">
-          <div v-if="!props.row.tag_id">
-            <q-btn
-              flat
-              round
-              icon="money_off_csred"
-              :color="props.row.is_paid ? 'success' : 'grey'"
-              size="sm"
-            ></q-btn>
-            <q-btn flat round icon="edit" color="info" size="sm"></q-btn>
-            <q-btn flat round icon="delete" color="negative" size="sm"></q-btn>
-          </div>
-        </q-td>
-      </q-tr>
+      </TableBillsTr>
       <q-tr v-show="props.row.expand" :props="props">
         <q-td colspan="100%" class="bg-grey-4">
           <div class="text-left q-py-md q-px-md">
@@ -83,40 +51,8 @@
                   </q-th>
                 </q-tr>
               </template>
-              <template v-slot:body-cell-isPaid="props">
-                <q-td :props="props">
-                  <q-badge rounded v-if="!props.row.isPaid" :color="'grey'" />
-                  <span v-else class="text-primary">PG</span>
-                </q-td>
-              </template>
-              <template v-slot:body-cell-price="props">
-                <q-td>
-                  {{ $n(parseFloat(props.row.price), 'currency') }}
-                </q-td>
-              </template>
-              <template v-slot:body-cell-dueDate="props">
-                <q-td>
-                  {{ $d(props.row.due_date) }}
-                </q-td>
-              </template>
-              <template v-slot:body-cell-action="props">
-                <q-td align="right">
-                  <q-btn
-                    flat
-                    round
-                    icon="money_off_csred"
-                    :color="props.row.is_paid ? 'success' : 'grey'"
-                    size="sm"
-                  ></q-btn>
-                  <q-btn flat round icon="edit" color="info" size="sm"></q-btn>
-                  <q-btn
-                    flat
-                    round
-                    icon="delete"
-                    color="negative"
-                    size="sm"
-                  ></q-btn>
-                </q-td>
+              <template v-slot:body="props">
+                <TableBillsTr :propsRow="props" :expanded="true"></TableBillsTr>
               </template>
             </q-table>
           </div>
@@ -129,6 +65,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { QTableProps } from 'quasar';
+import TableBillsTr from 'src/components/TableBillsTr.vue';
 
 const columns: QTableProps['columns'] = [
   {
@@ -176,6 +113,9 @@ const columns: QTableProps['columns'] = [
 
 export default defineComponent({
   name: 'TableBill',
+  components: {
+    TableBillsTr,
+  },
   props: {
     bills: {
       type: Array,
