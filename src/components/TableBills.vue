@@ -10,9 +10,8 @@
       <q-tr :props="props">
         <q-th auto-width />
         <q-th v-for="col in props.cols" :key="col.name" :props="props">
-          {{ col.label }}
+          {{ $t(col.label) }}
         </q-th>
-        <q-th align="right">Actions</q-th>
       </q-tr>
     </template>
     <template v-slot:body="props">
@@ -73,10 +72,50 @@
               padding
               card-class="bg-grey-1 text-warning"
             >
+              <template v-slot:header="props">
+                <q-tr :props="props">
+                  <q-th
+                    v-for="col in props.cols"
+                    :key="col.name"
+                    :props="props"
+                  >
+                    {{ $t(col.label) }}
+                  </q-th>
+                </q-tr>
+              </template>
               <template v-slot:body-cell-isPaid="props">
                 <q-td :props="props">
                   <q-badge rounded v-if="!props.row.isPaid" :color="'grey'" />
                   <span v-else class="text-primary">PG</span>
+                </q-td>
+              </template>
+              <template v-slot:body-cell-price="props">
+                <q-td>
+                  {{ $n(parseFloat(props.row.price), 'currency') }}
+                </q-td>
+              </template>
+              <template v-slot:body-cell-dueDate="props">
+                <q-td>
+                  {{ $d(props.row.due_date) }}
+                </q-td>
+              </template>
+              <template v-slot:body-cell-action="props">
+                <q-td align="right">
+                  <q-btn
+                    flat
+                    round
+                    icon="money_off_csred"
+                    :color="props.row.is_paid ? 'success' : 'grey'"
+                    size="sm"
+                  ></q-btn>
+                  <q-btn flat round icon="edit" color="info" size="sm"></q-btn>
+                  <q-btn
+                    flat
+                    round
+                    icon="delete"
+                    color="negative"
+                    size="sm"
+                  ></q-btn>
                 </q-td>
               </template>
             </q-table>
@@ -95,7 +134,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'isPaid',
     required: false,
-    label: 'Status',
+    label: 'page.notebook.table.bills.headers.status',
     align: 'left',
     sortable: true,
     field: (row: any) => row.is_paid,
@@ -103,7 +142,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'name',
     required: true,
-    label: 'Descrição',
+    label: 'page.notebook.table.bills.headers.description',
     sortable: true,
     align: 'left',
     sortOrder: 'ad',
@@ -112,7 +151,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'dueDate',
     required: true,
-    label: 'Vencimento',
+    label: 'page.notebook.table.bills.headers.dueDate',
     sortable: true,
     align: 'left',
     field: (row: any) => row.due_date,
@@ -120,10 +159,18 @@ const columns: QTableProps['columns'] = [
   {
     name: 'price',
     required: true,
-    label: 'Preço',
+    label: 'page.notebook.table.bills.headers.price',
     sortable: true,
     align: 'left',
     field: (row: any) => row.price,
+  },
+  {
+    name: 'action',
+    required: false,
+    label: 'page.notebook.table.bills.headers.actions',
+    sortable: false,
+    align: 'right',
+    field: '',
   },
 ];
 

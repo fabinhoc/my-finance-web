@@ -26,6 +26,20 @@ export default {
       register: 'Criar conta',
       alreadyRegistered: 'Já está cadastrado?',
     },
+    notebook: {
+      table: {
+        bills: {
+          headers: {
+            name: 'Nome',
+            description: 'Descrição',
+            dueDate: 'Vencimento',
+            price: 'Preço',
+            actions: 'Ações',
+            status: 'Status',
+          },
+        },
+      },
+    },
   },
   validations: {
     required: 'Este campo é obrigatório',
@@ -37,5 +51,19 @@ export default {
       string: 'Este campo deve ter pelo menos {minLength} caracteres',
     },
     passwordConfirmation: 'Senha e confirmação de senha não conferem',
+  },
+  months: {
+    january: 'Janeiro',
+    february: 'Fevereiro',
+    march: 'Março',
+    april: 'Abril',
+    may: 'Maio',
+    june: 'Junho',
+    july: 'Julho',
+    august: 'Agosto',
+    september: 'Setembro',
+    october: 'Outubro',
+    november: 'Novembro',
+    december: 'Dezembro',
   },
 };

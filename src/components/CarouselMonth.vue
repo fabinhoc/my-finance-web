@@ -18,7 +18,7 @@
       class="column no-wrap flex-center"
     >
       <div class="text-center text-h6 text-primary text-weight-light">
-        {{ month.stringMonth }}
+        {{ $t(month.stringMonth) }}
       </div>
     </q-carousel-slide>
   </q-carousel>
@@ -32,51 +32,51 @@ import { useMonth } from 'src/stores/month.store';
 const months = [
   {
     monthInNumber: '01',
-    stringMonth: 'Janeiro',
+    stringMonth: 'months.january',
   },
   {
     monthInNumber: '02',
-    stringMonth: 'Fevereiro',
+    stringMonth: 'months.february',
   },
   {
     monthInNumber: '03',
-    stringMonth: 'Março',
+    stringMonth: 'months.march',
   },
   {
     monthInNumber: '04',
-    stringMonth: 'Abril',
+    stringMonth: 'months.april',
   },
   {
     monthInNumber: '05',
-    stringMonth: 'Maio',
+    stringMonth: 'months.may',
   },
   {
     monthInNumber: '06',
-    stringMonth: 'Junho',
+    stringMonth: 'months.june',
   },
   {
     monthInNumber: '07',
-    stringMonth: 'Julho',
+    stringMonth: 'months.july',
   },
   {
     monthInNumber: '08',
-    stringMonth: 'Agosto',
+    stringMonth: 'months.august',
   },
   {
     monthInNumber: '09',
-    stringMonth: 'Setembro',
+    stringMonth: 'months.september',
   },
   {
     monthInNumber: '10',
-    stringMonth: 'Outubro',
+    stringMonth: 'months.october',
   },
   {
     monthInNumber: '11',
-    stringMonth: 'Novembro',
+    stringMonth: 'months.november',
   },
   {
     monthInNumber: '12',
-    stringMonth: 'Dezembro',
+    stringMonth: 'months.december',
   },
 ] as MonthType[];
 

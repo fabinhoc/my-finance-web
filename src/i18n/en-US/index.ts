@@ -26,6 +26,20 @@ export default {
       register: 'Register',
       alreadyRegistered: 'Already registered?',
     },
+    notebook: {
+      table: {
+        bills: {
+          headers: {
+            name: 'Name',
+            description: 'Description',
+            dueDate: 'Due Date',
+            price: 'Price',
+            actions: 'Actions',
+            status: 'Status',
+          },
+        },
+      },
+    },
   },
   validations: {
     required: 'This field is required',
@@ -37,5 +51,19 @@ export default {
       string: 'This field must have at least {minLength} characters',
     },
     passwordConfirmation: 'Password e Password Confirmation do not match',
+  },
+  months: {
+    january: 'January',
+    february: 'February',
+    march: 'March',
+    april: 'April',
+    may: 'May',
+    june: 'June',
+    july: 'July',
+    august: 'August',
+    september: 'September',
+    october: 'October',
+    november: 'November',
+    december: 'December',
   },
 };
