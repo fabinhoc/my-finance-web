@@ -9,7 +9,7 @@
     padding
     arrows
     infinite
-    height="90px"
+    height="50px"
   >
     <q-carousel-slide
       v-for="month in months"
@@ -83,7 +83,9 @@ const months = [
 export default defineComponent({
   name: 'CarouselMonth',
   setup() {
-    const slide = ref('11');
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const slide = ref(currentMonth.toString());
     const { setMonth } = useMonth();
 
     onMounted(() => {

@@ -25,17 +25,21 @@
 
 <script lang="ts">
 import { useYear } from 'src/stores/year.store';
-import { watch, defineComponent, Ref, ref } from 'vue';
+import { watch, defineComponent, Ref, ref, onMounted } from 'vue';
 
 export default defineComponent({
   name: 'CarouselYear',
   setup() {
-    const slide = ref(2022);
     const currentYear = new Date().getFullYear();
+    const slide = ref(currentYear);
     const lastYear = currentYear - 1;
     const nextYear = currentYear + 1;
     let slides: Ref<number[]> = ref([lastYear, currentYear, nextYear]);
     const { setYear } = useYear();
+
+    onMounted(() => {
+      setYear(slide.value);
+    });
 
     watch(slide, (newValue) => {
       const currentYear = newValue;
