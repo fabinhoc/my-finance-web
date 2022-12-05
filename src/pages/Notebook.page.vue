@@ -28,7 +28,12 @@
         style="margin: 0 auto"
       />
       <q-card-section padding class="q-mt-lg">
-        <TableBills :bills="bills" />
+        <transition
+          enter-active-class="animated backInLeft slower"
+          leave-active-class="animated backOutRight slower"
+        >
+          <TableBills v-show="showBills" :bills="bills" />
+        </transition>
       </q-card-section>
     </q-card>
   </q-page>
@@ -65,6 +70,7 @@ export default defineComponent({
     const route = useRoute();
     const billService = useBillService();
     const bills: Ref<TaggableBillType[]> = ref([]);
+    const showBills: Ref<boolean> = ref(false);
 
     onMounted(() => {
       setBills(month.value, year.value);
@@ -75,6 +81,7 @@ export default defineComponent({
     });
 
     const setBills = async (month: MonthType, year: number) => {
+      showBills.value = false;
       const { monthInNumber } = month;
       const notebookId: string =
         typeof route.params.id === 'object'
@@ -95,6 +102,7 @@ export default defineComponent({
         bills.value.push(inverseTaggableBills(groupedBills[tagId]));
       }
       bills.value = lodash.orderBy(bills.value, ['name'], ['asc']);
+      showBills.value = true;
     };
 
     const getTaggableBills = (bills: BillType[]) => {
@@ -131,6 +139,7 @@ export default defineComponent({
     return {
       slide,
       bills,
+      showBills,
     };
   },
 });

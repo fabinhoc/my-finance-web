@@ -1,7 +1,7 @@
 <template>
   <q-item
     clickable
-    :to="'notebooks/' + id + '/' + name.replaceAll(' ', '-').toLowerCase()"
+    :to="'/notebooks/' + id + '/' + name.replaceAll(' ', '-').toLowerCase()"
   >
     <q-item-section avatar>
       <q-icon name="mdi-notebook-multiple" color="grey-7" />

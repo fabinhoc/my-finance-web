@@ -28,36 +28,44 @@
           />
         </q-td>
       </TableBillsTr>
-      <q-tr v-show="props.row.expand" :props="props">
-        <q-td colspan="100%" class="bg-grey-4">
-          <div class="text-left q-py-md q-px-md">
-            <q-table
-              :rows="props.row.bills"
-              :columns="columns"
-              row-key="id"
-              :rows-per-page-options="[0]"
-              flat
-              padding
-              card-class="bg-grey-1 text-warning"
-            >
-              <template v-slot:header="props">
-                <q-tr :props="props">
-                  <q-th
-                    v-for="col in props.cols"
-                    :key="col.name"
-                    :props="props"
-                  >
-                    {{ $t(col.label) }}
-                  </q-th>
-                </q-tr>
-              </template>
-              <template v-slot:body="props">
-                <TableBillsTr :propsRow="props" :expanded="true"></TableBillsTr>
-              </template>
-            </q-table>
-          </div>
-        </q-td>
-      </q-tr>
+      <transition
+        enter-active-class="animated fadeInLeft slow"
+        leave-active-class="animated fadeOutLeftBig slower"
+      >
+        <q-tr v-show="props.row.expand" :props="props">
+          <q-td colspan="100%" class="bg-grey-4">
+            <div class="text-left q-py-md q-px-md">
+              <q-table
+                :rows="props.row.bills"
+                :columns="columns"
+                row-key="id"
+                :rows-per-page-options="[0]"
+                flat
+                padding
+                card-class="bg-grey-1 text-warning"
+              >
+                <template v-slot:header="props">
+                  <q-tr :props="props">
+                    <q-th
+                      v-for="col in props.cols"
+                      :key="col.name"
+                      :props="props"
+                    >
+                      {{ $t(col.label) }}
+                    </q-th>
+                  </q-tr>
+                </template>
+                <template v-slot:body="props">
+                  <TableBillsTr
+                    :propsRow="props"
+                    :expanded="true"
+                  ></TableBillsTr>
+                </template>
+              </q-table>
+            </div>
+          </q-td>
+        </q-tr>
+      </transition>
     </template>
   </q-table>
 </template>

@@ -67,7 +67,12 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <transition
+        enter-active-class="animated fadeIn slower"
+        leave-active-class="animated fadeOut slower"
+      >
+        <router-view />
+      </transition>
     </q-page-container>
   </q-layout>
 </template>
