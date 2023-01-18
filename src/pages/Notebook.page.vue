@@ -36,6 +36,19 @@
         </transition>
       </q-card-section>
     </q-card>
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="add" color="warning" @click="toggleDialog = true" />
+    </q-page-sticky>
+
+    <q-dialog
+      v-model="toggleDialog"
+      persistent
+      :maximized="$q.platform.is.mobile"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <FormBill />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -54,6 +67,7 @@ import TableBills from 'src/components/TableBills.vue';
 import { TaggableBillType } from 'src/types/TaggableBill.type';
 import { BillType } from 'src/types/Bill.type';
 import { MonthType } from 'src/types/Month.type';
+import FormBill from 'src/components/FormBill.vue';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -62,6 +76,7 @@ export default defineComponent({
     CarouselMonth,
     NotebookPageCardTitle,
     TableBills,
+    FormBill,
   },
   setup() {
     const slide = ref('style');
@@ -71,13 +86,18 @@ export default defineComponent({
     const billService = useBillService();
     const bills: Ref<TaggableBillType[]> = ref([]);
     const showBills: Ref<boolean> = ref(false);
+    const toggleDialog: Ref<boolean> = ref(false);
 
     onMounted(() => {
-      setBills(month.value, year.value);
+      if (month.value) {
+        setBills(month.value, year.value);
+      }
     });
 
     watch([month, year], async ([newMonthValue, newYearValue]) => {
-      setBills(newMonthValue, newYearValue);
+      if (newMonthValue) {
+        setBills(newMonthValue, newYearValue);
+      }
     });
 
     const setBills = async (month: MonthType, year: number) => {
@@ -140,6 +160,7 @@ export default defineComponent({
       slide,
       bills,
       showBills,
+      toggleDialog,
     };
   },
 });

@@ -24,7 +24,7 @@
             round
             dense
             @click="props.row.expand = !props.row.expand"
-            :icon="props.row.expand ? 'remove' : 'add'"
+            :icon="props.row.expand ? 'expand_less' : 'expand_more'"
           />
         </q-td>
       </TableBillsTr>
@@ -74,7 +74,6 @@
 import { defineComponent } from 'vue';
 import { QTableProps } from 'quasar';
 import TableBillsTr from 'src/components/TableBillsTr.vue';
-
 const columns: QTableProps['columns'] = [
   {
     name: 'isPaid',
@@ -118,7 +117,6 @@ const columns: QTableProps['columns'] = [
     field: '',
   },
 ];
-
 export default defineComponent({
   name: 'TableBill',
   components: {

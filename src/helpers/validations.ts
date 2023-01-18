@@ -1,3 +1,6 @@
+import { date } from 'quasar';
+import _ from 'lodash';
+
 const email = (email: string): boolean => {
   const emailPattern =
     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
@@ -5,6 +8,9 @@ const email = (email: string): boolean => {
 };
 
 const required = (value: any): boolean => {
+  if (typeof value === 'object') {
+    return _.isEmpty(value) ? false : true;
+  }
   return value && value.length > 0;
 };
 
@@ -36,6 +42,18 @@ const confirm = (value: any, confirmValue: any) => {
   return value === confirmValue;
 };
 
+const isValidDate = (value: any, format: string) => {
+  if (!value) return false;
+  const formatArray = format.split('/');
+  const dateArray = value.split('/');
+  let dateString: string = value;
+  if (formatArray[0] === 'DD') {
+    dateString = `${dateArray[1]}, ${dateArray[0]}, ${dateArray[2]}`;
+  }
+
+  return date.isValid(dateString);
+};
+
 export default {
   email,
   required,
@@ -44,4 +62,5 @@ export default {
   minLength,
   maxLength,
   confirm,
+  isValidDate,
 };

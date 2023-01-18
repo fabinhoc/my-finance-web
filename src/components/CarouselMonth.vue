@@ -83,9 +83,13 @@ const months = [
 export default defineComponent({
   name: 'CarouselMonth',
   setup() {
+    const addLeadingZeroMonth = (month: number) => {
+      return month <= 9 ? '0' + month : month.toString();
+    };
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
-    const slide = ref(currentMonth.toString());
+    const formattedMonth = addLeadingZeroMonth(currentMonth);
+    const slide = ref(formattedMonth);
     const { setMonth } = useMonth();
 
     onMounted(() => {

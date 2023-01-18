@@ -2,6 +2,7 @@ import { TagType } from './Tag.type';
 
 export interface BillType {
   id: number;
+  notebook_id: number;
   name: string;
   description: string | null;
   price: string;
