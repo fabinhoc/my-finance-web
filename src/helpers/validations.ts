@@ -54,6 +54,13 @@ const isValidDate = (value: any, format: string) => {
   return date.isValid(dateString);
 };
 
+const requiredIf = (value: any, valueCondition: any): boolean => {
+  if (typeof value === 'object') {
+    return _.isEmpty(value) && _.isEmpty(valueCondition) ? false : true;
+  }
+  return value && value.length && valueCondition && valueCondition.length > 0;
+};
+
 export default {
   email,
   required,
@@ -63,4 +70,5 @@ export default {
   maxLength,
   confirm,
   isValidDate,
+  requiredIf,
 };

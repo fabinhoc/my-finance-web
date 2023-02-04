@@ -64,6 +64,7 @@ export default {
           addTag: 'Adicionar tag à conta',
           cancel: 'Cancelar',
           save: 'Salvar',
+          totalPaid: 'Valor Pago',
         },
       },
     },

@@ -64,6 +64,7 @@ export default {
           addTag: 'Add tag to bill',
           cancel: 'Cancel',
           save: 'Save',
+          totalPaid: 'Total Paid',
         },
       },
     },

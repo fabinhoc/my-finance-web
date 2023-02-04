@@ -47,7 +47,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <FormBill />
+      <FormBill @toggleDialog="setToggleDialog" />
     </q-dialog>
   </q-page>
 </template>
@@ -156,11 +156,17 @@ export default defineComponent({
       } as TaggableBillType;
     };
 
+    const setToggleDialog = (toggle) => {
+      toggleDialog.value = toggle;
+      setBills(month.value, year.value);
+    };
+
     return {
       slide,
       bills,
       showBills,
       toggleDialog,
+      setToggleDialog,
     };
   },
 });

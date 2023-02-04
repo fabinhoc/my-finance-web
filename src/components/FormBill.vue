@@ -19,20 +19,21 @@
         <div class="row q-col-gutter-md">
           <div class="col-8">
             <q-select
-              v-model="form.notebook"
+              v-model="v$.notebook.$model"
               :options="notebooks"
               label="Notebooks"
               option-value="id"
               option-label="name"
+              @input="v$.notebook.$touch()"
               :rules="[
-                (val) =>
-                  formValidation.required(val) || $t('validations.required'),
+                () =>
+                  !v$.notebook.required.$invalid || $t('validations.required'),
               ]"
             />
           </div>
           <div class="col-4">
             <q-select
-              v-model="form.tag"
+              v-model="v$.tag.$model"
               :options="tags"
               :label="$t('page.notebook.form.bills.addTag')"
               option-value="id"
@@ -57,13 +58,11 @@
           <div class="col-9">
             <q-input
               autofocus
-              v-model="form.name"
+              v-model="v$.name.$model"
               :label="$t('page.notebook.form.bills.name')"
               lazy-rules
               :rules="[
-                (val) =>
-                  formValidation.required(val) || $t('validations.required'),
-                (val) => formValidation.string(val) || $t('validations.string'),
+                () => !v$.name.required.$invalid || $t('validations.required'),
               ]"
             />
           </div>
@@ -71,41 +70,56 @@
             <q-checkbox
               class="q-mt-md float-right"
               left-label
-              v-model="form.is_paid"
+              v-model="v$.is_paid.$model"
               :label="$t('page.notebook.form.bills.isPaid') + '?'"
               lazy-rules
               :rules="[
-                (val) =>
-                  formValidation.required(val) || $t('validations.required'),
+                () =>
+                  !v$.is_paid.required.$invalid || $t('validations.required'),
+              ]"
+            />
+          </div>
+          <div class="col-12" v-if="form.is_paid">
+            <q-input
+              v-model="v$.total_paid.$model"
+              :label="$t('page.notebook.form.bills.totalPaid')"
+              mask="#.##"
+              fill-mask="0"
+              reverse-fill-mask
+              lazy-rules
+              :rules="[
+                () =>
+                  !v$.total_paid.requiredIfIsPaid.$invalid ||
+                  'Este campo é obrigatório quando ' +
+                    $t('page.notebook.form.bills.isPaid') +
+                    ' é verdadeiro',
               ]"
             />
           </div>
           <div class="col-12">
             <q-input
-              v-model="form.description"
+              v-model="v$.description.$model"
               :label="$t('page.notebook.form.bills.description')"
               lazy-rules
             />
           </div>
           <div class="col-6">
             <q-input
-              v-model="form.price"
+              v-model="v$.price.$model"
               :label="$t('page.notebook.form.bills.valueBill')"
               mask="#.##"
               fill-mask="0"
               reverse-fill-mask
               lazy-rules
               :rules="[
-                (val) => formValidation.number(val) || $t('validations.number'),
-                (val) =>
-                  formValidation.required(val) || $t('validations.required'),
+                () => !v$.price.required.$invalid || $t('validations.required'),
               ]"
             >
             </q-input>
           </div>
           <div class="col-6">
             <q-input
-              v-model="form.dueDate"
+              v-model="v$.dueDate.$model"
               :mask="$t('page.notebook.form.bills.inputDateFormat')"
               :label="$t('page.notebook.form.bills.dueDate')"
               lazy-rules
@@ -115,8 +129,8 @@
                     val,
                     $t('page.notebook.form.bills.inputDateMask')
                   ) || $t('validations.date'),
-                (val) =>
-                  formValidation.required(val) || $t('validations.required'),
+                () =>
+                  !v$.dueDate.required.$invalid || $t('validations.required'),
               ]"
             >
               <template v-slot:append>
@@ -127,7 +141,7 @@
                     transition-hide="scale"
                   >
                     <q-date
-                      v-model="form.dueDate"
+                      v-model="v$.dueDate.$model"
                       :mask="$t('page.notebook.form.bills.inputDateMask')"
                       :rules="[
                         (val) =>
@@ -171,7 +185,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, Ref } from 'vue';
+import { defineComponent, onMounted, ref, Ref, computed } from 'vue';
 import formValidation from 'boot/form/validations';
 import { useAuthStore } from 'src/stores/auth.store';
 import { BillTypeDto } from 'src/types/Bill.type.dto';
@@ -183,18 +197,19 @@ import { TagType } from 'src/types/Tag.type';
 import useBillService from 'src/services/Bill.service';
 import useNotify from 'src/composables/UseNotify';
 import dateHelper from 'src/helpers/date.helper';
-import { useQuasar } from 'quasar';
+import { useVuelidate } from '@vuelidate/core';
+import { required, decimal, requiredIf, integer } from '@vuelidate/validators';
 
 export default defineComponent({
   name: 'FormBill',
-  setup() {
+  emits: ['toggleDialog'],
+  setup(props, { emit }) {
     const { user } = useAuthStore();
     const route = useRoute();
     const notebookService = useNotebookService();
     const tagService = useTagService();
     const billService = useBillService();
     const notify = useNotify();
-    const $q = useQuasar();
     let closeDialog = ref(false);
     let notebooks: Ref<NotebookType[]> = ref([]);
     let tags: Ref<TagType[]> = ref([]);
@@ -215,6 +230,25 @@ export default defineComponent({
       user_id: user.id,
     });
 
+    const rules = {
+      name: { required },
+      notebook: { required },
+      tag: {},
+      description: {},
+      price: { required, decimal },
+      is_paid: { required },
+      total_paid: {
+        requiredIfIsPaid: requiredIf(() => {
+          return form.value.is_paid && form.value.total_paid === null;
+        }),
+      },
+      dueDate: { required },
+      tag_id: {},
+      user_id: { integer },
+    };
+
+    const v$ = useVuelidate(rules, form);
+
     onMounted(async () => {
       notebooks.value = await notebookService.all();
       form.value.notebook = notebooks.value.filter((notebook) => {
@@ -224,24 +258,25 @@ export default defineComponent({
     });
 
     const onSubmit = async () => {
-      const data: BillTypeDto = {
-        name: form.value.name,
-        notebookId: form.value.notebook?.id,
-        description: form.value.description,
-        tagId: form.value.tag?.id,
-        price: form.value.price,
-        isPaid: form.value.is_paid,
-        dueDate: dateHelper.formatDateToDB(form.value.dueDate),
-        userId: form.value.user_id,
-      };
-      console.log(data);
-
       try {
+        const isFormCorrect = await v$.value.$validate();
+        if (!isFormCorrect) return;
+        const data: BillTypeDto = {
+          name: form.value.name,
+          notebookId: form.value.notebook?.id,
+          description: form.value.description,
+          tagId: form.value.tag?.id,
+          price: form.value.price,
+          isPaid: form.value.is_paid,
+          dueDate: dateHelper.formatDateToDB(form.value.dueDate),
+          userId: form.value.user_id,
+          totalPaid: form.value.total_paid,
+        };
         await billService.post(data);
+        closeDialog.value = false;
+        emit('toggleDialog', closeDialog.value);
         notify.success('Conta salva com sucesso!');
-        closeDialog.value = true;
       } catch (error: any) {
-        console.log('aqui');
         notify.error(error.response.data.errors[0].message);
       }
     };
@@ -253,6 +288,7 @@ export default defineComponent({
       tags,
       onSubmit,
       closeDialog,
+      v$,
     };
   },
 });
