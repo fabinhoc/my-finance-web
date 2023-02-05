@@ -61,7 +61,14 @@
             {{ $t('page.notebook.table.bills.tooltips.markAsPaid') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="edit" color="info" size="sm">
+        <q-btn
+          flat
+          round
+          icon="edit"
+          color="info"
+          size="sm"
+          @click="$emit('editBillEvent', propsRow.row.id)"
+        >
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"

@@ -32,12 +32,16 @@
           enter-active-class="animated backInLeft slower"
           leave-active-class="animated backOutRight slower"
         >
-          <TableBills v-show="showBills" :bills="bills" />
+          <TableBills
+            v-show="showBills"
+            :bills="bills"
+            @edit-bill-event="setBillToEdit"
+          />
         </transition>
       </q-card-section>
     </q-card>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add" color="warning" @click="toggleDialog = true" />
+      <q-btn fab icon="add" color="warning" @click="setNewBill()" />
     </q-page-sticky>
 
     <q-dialog
@@ -47,7 +51,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
     >
-      <FormBill @toggleDialog="setToggleDialog" />
+      <FormBill @toggleDialog="setToggleDialog" :bill="billToEdit" />
     </q-dialog>
   </q-page>
 </template>
@@ -68,6 +72,7 @@ import { TaggableBillType } from 'src/types/TaggableBill.type';
 import { BillType } from 'src/types/Bill.type';
 import { MonthType } from 'src/types/Month.type';
 import FormBill from 'src/components/FormBill.vue';
+import dateHelper from 'src/helpers/date.helper';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -87,6 +92,7 @@ export default defineComponent({
     const bills: Ref<TaggableBillType[]> = ref([]);
     const showBills: Ref<boolean> = ref(false);
     const toggleDialog: Ref<boolean> = ref(false);
+    const billToEdit: Ref<BillType | undefined> = ref();
 
     onMounted(() => {
       if (month.value) {
@@ -165,12 +171,27 @@ export default defineComponent({
       setBills(month.value, year.value);
     };
 
+    const setBillToEdit = async (id: number) => {
+      const output = await billService.get(id);
+      output.due_date = dateHelper.formatDateToText(output.due_date);
+      billToEdit.value = output;
+      toggleDialog.value = true;
+    };
+
+    const setNewBill = () => {
+      toggleDialog.value = true;
+      billToEdit.value = undefined;
+    };
+
     return {
       slide,
       bills,
       showBills,
       toggleDialog,
       setToggleDialog,
+      setBillToEdit,
+      billToEdit,
+      setNewBill,
     };
   },
 });

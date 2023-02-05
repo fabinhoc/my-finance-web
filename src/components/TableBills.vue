@@ -15,7 +15,11 @@
       </q-tr>
     </template>
     <template v-slot:body="props">
-      <TableBillsTr :propsRow="props" :expanded="false">
+      <TableBillsTr
+        :propsRow="props"
+        :expanded="false"
+        @edit-bill-event="editBillEvent"
+      >
         <q-td auto-width>
           <q-btn
             v-if="props.row.tag_id"
@@ -59,6 +63,7 @@
                   <TableBillsTr
                     :propsRow="props"
                     :expanded="true"
+                    @edit-bill-event="editBillEvent"
                   ></TableBillsTr>
                 </template>
               </q-table>
@@ -137,9 +142,14 @@ export default defineComponent({
       default: Array,
     },
   },
-  setup() {
+  emits: ['editBillEvent'],
+  setup(props, { emit }) {
+    const editBillEvent = (id: number) => {
+      emit('editBillEvent', id);
+    };
     return {
       columns,
+      editBillEvent,
     };
   },
 });

@@ -14,6 +14,19 @@ const formatDateToDB = (value: string): any => {
   return date.formatDate(dateToFormat, 'YYYY-MM-DD');
 };
 
+const formatDateToText = (value: string): any => {
+  const locale = Quasar.lang.isoName;
+  if (!value) return '';
+  const dateToFormat = new Date(value);
+  let format = 'MM/DD/YYYY';
+  if (locale === 'pt-BR') {
+    format = 'DD/MM/YYYY';
+  }
+
+  return date.formatDate(dateToFormat, format);
+};
+
 export default {
   formatDateToDB,
+  formatDateToText,
 };

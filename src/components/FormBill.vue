@@ -119,7 +119,7 @@
           </div>
           <div class="col-6">
             <q-input
-              v-model="v$.dueDate.$model"
+              v-model="v$.due_date.$model"
               :mask="$t('page.notebook.form.bills.inputDateFormat')"
               :label="$t('page.notebook.form.bills.dueDate')"
               lazy-rules
@@ -130,7 +130,7 @@
                     $t('page.notebook.form.bills.inputDateMask')
                   ) || $t('validations.date'),
                 () =>
-                  !v$.dueDate.required.$invalid || $t('validations.required'),
+                  !v$.due_date.required.$invalid || $t('validations.required'),
               ]"
             >
               <template v-slot:append>
@@ -141,7 +141,7 @@
                     transition-hide="scale"
                   >
                     <q-date
-                      v-model="v$.dueDate.$model"
+                      v-model="v$.due_date.$model"
                       :mask="$t('page.notebook.form.bills.inputDateMask')"
                       :rules="[
                         (val) =>
@@ -203,6 +203,12 @@ import { required, decimal, requiredIf, integer } from '@vuelidate/validators';
 export default defineComponent({
   name: 'FormBill',
   emits: ['toggleDialog'],
+  props: {
+    bill: {
+      type: Object,
+      required: false,
+    },
+  },
   setup(props, { emit }) {
     const { user } = useAuthStore();
     const route = useRoute();
@@ -225,11 +231,10 @@ export default defineComponent({
       price: null,
       is_paid: false,
       total_paid: null,
-      dueDate: null,
+      due_date: null,
       tag_id: 0,
       user_id: user.id,
     });
-
     const rules = {
       name: { required },
       notebook: { required },
@@ -242,37 +247,63 @@ export default defineComponent({
           return form.value.is_paid && form.value.total_paid === null;
         }),
       },
-      dueDate: { required },
+      due_date: { required },
       tag_id: {},
       user_id: { integer },
     };
-
     const v$ = useVuelidate(rules, form);
 
     onMounted(async () => {
+      tags.value = await tagService.all();
+      if (props.bill) {
+        form.value = props.bill;
+        form.value.tag = tags.value.filter((tag: any) => {
+          return tag.id === props.bill?.tag_id;
+        })[0];
+      }
       notebooks.value = await notebookService.all();
       form.value.notebook = notebooks.value.filter((notebook) => {
         return notebook.id === parseInt(notebookId);
       })[0];
-      tags.value = await tagService.all();
     });
 
     const onSubmit = async () => {
+      const isFormCorrect = await v$.value.$validate();
+      if (!isFormCorrect) return;
+      const id = props.bill?.id;
+      console.log(form.value);
+      const payload: BillTypeDto = {
+        name: form.value.name,
+        notebookId: form.value.notebook?.id,
+        description: form.value.description,
+        tagId: form.value.tag ? form.value.tag?.id : null,
+        price: form.value.price,
+        isPaid: form.value.is_paid,
+        dueDate: dateHelper.formatDateToDB(form.value.due_date),
+        userId: form.value.user_id,
+        totalPaid: form.value.total_paid,
+      };
+      if (props.bill) {
+        editBill(id, payload);
+        return;
+      }
+      saveNewBill(payload);
+    };
+
+    const saveNewBill = async (payload: BillTypeDto) => {
       try {
-        const isFormCorrect = await v$.value.$validate();
-        if (!isFormCorrect) return;
-        const data: BillTypeDto = {
-          name: form.value.name,
-          notebookId: form.value.notebook?.id,
-          description: form.value.description,
-          tagId: form.value.tag?.id,
-          price: form.value.price,
-          isPaid: form.value.is_paid,
-          dueDate: dateHelper.formatDateToDB(form.value.dueDate),
-          userId: form.value.user_id,
-          totalPaid: form.value.total_paid,
-        };
-        await billService.post(data);
+        await billService.post(payload);
+        closeDialog.value = false;
+        emit('toggleDialog', closeDialog.value);
+        notify.success('Conta salva com sucesso!');
+      } catch (error: any) {
+        notify.error(error.response.data.errors[0].message);
+      }
+    };
+
+    const editBill = async (id: number, payload: BillTypeDto) => {
+      try {
+        await billService.put(props.bill?.id, payload);
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
         notify.success('Conta salva com sucesso!');

@@ -114,9 +114,7 @@ export default defineComponent({
           password: form.value.password,
           password_confirmation: form.value.password_confirmation,
         } as RegisterType);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     return {

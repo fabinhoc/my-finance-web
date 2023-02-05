@@ -123,7 +123,6 @@ export default defineComponent({
     onMounted(async () => {
       notebooks.value = await notebookService.all();
       tags.value = await tagService.all();
-      console.log(tags.value);
     });
 
     return {
