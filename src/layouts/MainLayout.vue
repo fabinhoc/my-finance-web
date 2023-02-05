@@ -49,6 +49,9 @@
         <q-list>
           <q-item-label header>
             {{ $t('menu.notebooks') }}
+            <div class="col-1 column items-end" style="margin-top: -30px">
+              <q-btn round flat icon="add"></q-btn>
+            </div>
           </q-item-label>
 
           <MenuNotebook
@@ -57,11 +60,14 @@
             v-bind="notebook"
           />
 
-          <!-- <EssentialLink
-            v-for="link in notebooks"
-            :key="link.name"
-            v-bind="link"
-          /> -->
+          <q-item-label header>
+            {{ $t('menu.tags') }}
+            <div class="col-1 column items-end" style="margin-top: -30px">
+              <q-btn round flat icon="add"></q-btn>
+            </div>
+          </q-item-label>
+
+          <MenuTag v-for="tag in tags" :key="tag.id" v-bind="tag" />
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -86,51 +92,9 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth.store';
 import { NotebookType } from 'src/types/Notebook.type';
 import MenuNotebook from 'src/components/MenuNotebook.vue';
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-];
+import useTagService from 'src/services/Tag.service';
+import { TagType } from 'src/types/Tag.type';
+import MenuTag from 'src/components/MenuTag.vue';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -138,6 +102,7 @@ export default defineComponent({
   components: {
     SelectLanguage,
     MenuNotebook,
+    MenuTag,
   },
 
   setup() {
@@ -146,7 +111,9 @@ export default defineComponent({
     const router = useRouter();
     const { user } = useAuthStore();
     const notebookService = useNotebookService();
+    const tagService = useTagService();
     let notebooks = ref<NotebookType[]>([]);
+    let tags = ref<TagType[]>([]);
 
     const handleLogout = async () => {
       await authService.logout();
@@ -155,10 +122,11 @@ export default defineComponent({
 
     onMounted(async () => {
       notebooks.value = await notebookService.all();
+      tags.value = await tagService.all();
+      console.log(tags.value);
     });
 
     return {
-      essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -166,6 +134,7 @@ export default defineComponent({
       handleLogout,
       user,
       notebooks,
+      tags,
     };
   },
 });

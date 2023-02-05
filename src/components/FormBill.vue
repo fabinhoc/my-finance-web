@@ -185,7 +185,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, Ref, computed } from 'vue';
+import { defineComponent, onMounted, ref, Ref } from 'vue';
 import formValidation from 'boot/form/validations';
 import { useAuthStore } from 'src/stores/auth.store';
 import { BillTypeDto } from 'src/types/Bill.type.dto';

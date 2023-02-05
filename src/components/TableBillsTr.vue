@@ -2,7 +2,7 @@
   <q-tr>
     <slot />
     <q-td>
-      <q-badge rounded v-if="!propsRow.row.isPaid" :color="'grey'">
+      <q-badge rounded v-if="!propsRow.row.is_paid" :color="'grey'">
         <q-tooltip
           anchor="bottom middle"
           transition-show="flip-right"
@@ -36,6 +36,13 @@
     </q-td>
     <q-td>
       {{ $n(parseFloat(propsRow.row.price), 'currency') }}
+    </q-td>
+    <q-td>
+      {{
+        propsRow.row.total_paid
+          ? $n(parseFloat(propsRow.row.total_paid), 'currency')
+          : $n(parseFloat('0'), 'currency')
+      }}
     </q-td>
     <q-td align="right">
       <div v-if="!propsRow.row.tag_id || expanded">

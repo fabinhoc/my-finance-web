@@ -9,6 +9,7 @@ export default {
   },
   menu: {
     notebooks: 'Meus Cadernos',
+    tags: 'Tags',
   },
   page: {
     login: {
@@ -36,6 +37,7 @@ export default {
             price: 'Preço',
             actions: 'Ações',
             status: 'Status',
+            totalPaid: 'Total Pago',
           },
           tooltips: {
             pending: 'Pendente',

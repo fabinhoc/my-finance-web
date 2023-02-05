@@ -143,6 +143,9 @@ export default defineComponent({
       const totalPriceBills = lodash.sumBy(bills, (bill: BillType) => {
         return parseFloat(bill.price);
       });
+      const totalPaid = lodash.sumBy(bills, (bill: BillType) => {
+        return parseFloat(bill.total_paid);
+      });
 
       return {
         id: bills[0].tag.id,
@@ -152,6 +155,7 @@ export default defineComponent({
         price: totalPriceBills.toFixed(2),
         tag_id: bills[0].tag.id,
         color: bills[0].tag.color,
+        total_paid: totalPaid,
         bills: bills,
       } as TaggableBillType;
     };

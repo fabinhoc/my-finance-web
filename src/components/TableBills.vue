@@ -109,6 +109,14 @@ const columns: QTableProps['columns'] = [
     field: (row: any) => row.price,
   },
   {
+    name: 'totalPaid',
+    required: false,
+    label: 'page.notebook.table.bills.headers.totalPaid',
+    sortable: true,
+    align: 'left',
+    field: (row: any) => row.total_paid,
+  },
+  {
     name: 'action',
     required: false,
     label: 'page.notebook.table.bills.headers.actions',
