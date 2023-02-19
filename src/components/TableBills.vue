@@ -19,6 +19,7 @@
         :propsRow="props"
         :expanded="false"
         @edit-bill-event="editBillEvent"
+        @delete-bill-event="deleteBillEvent"
       >
         <q-td auto-width>
           <q-btn
@@ -64,6 +65,7 @@
                     :propsRow="props"
                     :expanded="true"
                     @edit-bill-event="editBillEvent"
+                    @delete-bill-event="deleteBillEvent"
                   ></TableBillsTr>
                 </template>
               </q-table>
@@ -142,14 +144,18 @@ export default defineComponent({
       default: Array,
     },
   },
-  emits: ['editBillEvent'],
+  emits: ['editBillEvent', 'deleteBillEvent'],
   setup(props, { emit }) {
     const editBillEvent = (id: number) => {
       emit('editBillEvent', id);
     };
+    const deleteBillEvent = (id: number) => {
+      emit('deleteBillEvent', id);
+    };
     return {
       columns,
       editBillEvent,
+      deleteBillEvent,
     };
   },
 });

@@ -36,6 +36,7 @@
             v-show="showBills"
             :bills="bills"
             @edit-bill-event="setBillToEdit"
+            @delete-bill-event="deleteBill"
           />
         </transition>
       </q-card-section>
@@ -73,6 +74,9 @@ import { BillType } from 'src/types/Bill.type';
 import { MonthType } from 'src/types/Month.type';
 import FormBill from 'src/components/FormBill.vue';
 import dateHelper from 'src/helpers/date.helper';
+import { useQuasar } from 'quasar';
+import useNotify from 'src/composables/UseNotify';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -93,6 +97,9 @@ export default defineComponent({
     const showBills: Ref<boolean> = ref(false);
     const toggleDialog: Ref<boolean> = ref(false);
     const billToEdit: Ref<BillType | undefined> = ref();
+    const $q = useQuasar();
+    const notify = useNotify();
+    const { t } = useI18n();
 
     onMounted(() => {
       if (month.value) {
@@ -183,6 +190,23 @@ export default defineComponent({
       billToEdit.value = undefined;
     };
 
+    const deleteBill = (id: number) => {
+      const title = t('page.notebook.confirmText');
+      const message = t('page.notebook.confirmMessage');
+      $q.dialog({
+        title: title,
+        message: message,
+        cancel: {
+          text: t('page.notebook.cancel'),
+        },
+        persistent: true,
+      }).onOk(async () => {
+        await billService.remove(id);
+        setBills(month.value, year.value);
+        notify.success(t('notify.billRemoved'));
+      });
+    };
+
     return {
       slide,
       bills,
@@ -192,6 +216,7 @@ export default defineComponent({
       setBillToEdit,
       billToEdit,
       setNewBill,
+      deleteBill,
     };
   },
 });

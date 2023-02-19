@@ -69,6 +69,9 @@ export default {
           totalPaid: 'Total Paid',
         },
       },
+      confirmText: 'Confirm',
+      confirmMessage: 'Are you sure you want to delete?',
+      cancel: 'Cancelar',
     },
   },
   validations: {
@@ -96,5 +99,9 @@ export default {
     october: 'October',
     november: 'November',
     december: 'December',
+  },
+  notify: {
+    billSaved: 'Bill saved with success!',
+    billRemoved: 'Bill removed with success!',
   },
 };

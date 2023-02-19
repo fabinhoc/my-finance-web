@@ -77,7 +77,14 @@
             {{ $t('page.notebook.table.bills.tooltips.edit') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="delete" color="negative" size="sm">
+        <q-btn
+          flat
+          round
+          icon="delete"
+          color="negative"
+          size="sm"
+          @click="$emit('deleteBillEvent', propsRow.row.id)"
+        >
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"

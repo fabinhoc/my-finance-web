@@ -199,6 +199,7 @@ import useNotify from 'src/composables/UseNotify';
 import dateHelper from 'src/helpers/date.helper';
 import { useVuelidate } from '@vuelidate/core';
 import { required, decimal, requiredIf, integer } from '@vuelidate/validators';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'FormBill',
@@ -210,6 +211,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { t } = useI18n();
     const { user } = useAuthStore();
     const route = useRoute();
     const notebookService = useNotebookService();
@@ -295,7 +297,7 @@ export default defineComponent({
         await billService.post(payload);
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
-        notify.success('Conta salva com sucesso!');
+        notify.success(t('notify.billSaved'));
       } catch (error: any) {
         notify.error(error.response.data.errors[0].message);
       }
@@ -306,7 +308,7 @@ export default defineComponent({
         await billService.put(props.bill?.id, payload);
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
-        notify.success('Conta salva com sucesso!');
+        notify.success(t('notify.billSaved'));
       } catch (error: any) {
         notify.error(error.response.data.errors[0].message);
       }

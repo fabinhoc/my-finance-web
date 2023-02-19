@@ -69,6 +69,9 @@ export default {
           totalPaid: 'Valor Pago',
         },
       },
+      confirmText: 'Confirmar ação',
+      confirmMessage: 'Tem certeza de que deseja excluir?',
+      cancel: 'Cancelar',
     },
   },
   validations: {
