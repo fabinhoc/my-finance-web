@@ -142,7 +142,7 @@
                   >
                     <q-date
                       v-model="v$.due_date.$model"
-                      :mask="$t('page.notebook.form.bills.inputDateMask')"
+                      :mask="'DD/MM/YYYY'"
                       :rules="[
                         (val) =>
                           formValidation.isValidDate(
@@ -211,7 +211,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const { user } = useAuthStore();
     const route = useRoute();
     const notebookService = useNotebookService();
@@ -276,14 +276,14 @@ export default defineComponent({
       console.log(form.value);
       const payload: BillTypeDto = {
         name: form.value.name,
-        notebookId: form.value.notebook?.id,
+        notebook_id: form.value.notebook?.id,
         description: form.value.description,
-        tagId: form.value.tag ? form.value.tag?.id : null,
+        tag_id: form.value.tag ? form.value.tag?.id : null,
         price: form.value.price,
-        isPaid: form.value.is_paid,
-        dueDate: dateHelper.formatDateToDB(form.value.due_date),
-        userId: form.value.user_id,
-        totalPaid: form.value.total_paid,
+        is_paid: form.value.is_paid,
+        due_date: dateHelper.formatDateToDB(form.value.due_date, locale.value),
+        user_id: form.value.user_id,
+        total_paid: form.value.total_paid,
       };
       if (props.bill) {
         editBill(id, payload);

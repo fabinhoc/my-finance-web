@@ -15,11 +15,12 @@ export const useAuthStore = defineStore('login', {
   actions: {
     async authenticate(payload: LoginType) {
       try {
-        const { post } = useApi('login');
-        const user = await post(payload);
+        const { post } = useApi('auth/login');
+        const data = await post(payload);
+        console.log(data);
 
-        this.user = user;
-        this.token = user.token;
+        this.user = data.user;
+        this.token = data.access_token;
 
         localStorage.setItem('user', JSON.stringify(this.user));
         localStorage.setItem('token', this.token);
@@ -51,7 +52,7 @@ export const useAuthStore = defineStore('login', {
 
     async logout() {
       try {
-        const response = await api.get('logout');
+        const response = await api.post('auth/logout');
         this.user = {} as UserType;
         this.token = '';
         localStorage.removeItem('user');
@@ -65,7 +66,7 @@ export const useAuthStore = defineStore('login', {
 
     async register(payload: RegisterType) {
       try {
-        const user: UserType = await api.post('register', payload);
+        const user: UserType = await api.post('auth/register', payload);
         return user;
       } catch (error: any | unknown) {
         throw error;
@@ -74,7 +75,7 @@ export const useAuthStore = defineStore('login', {
   },
   getters: {
     isLoggedIn: (state) => {
-      return !!state.token;
+      return !!state.token && !!state.user.email_verified_at;
     },
   },
 });

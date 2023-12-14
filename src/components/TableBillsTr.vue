@@ -32,7 +32,7 @@
       <span>{{ propsRow.row.name }}</span>
     </q-td>
     <q-td>
-      {{ $d(propsRow.row.due_date) }}
+      {{ formatDateString(propsRow.row.due_date) }}
     </q-td>
     <q-td>
       {{ $n(parseFloat(propsRow.row.price), 'currency') }}
@@ -100,12 +100,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import dateHelper from 'src/helpers/date.helper';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'TableBill',
   props: ['propsRow', 'expanded'],
   setup() {
-    return {};
+    const { locale } = useI18n();
+
+    const formatDateString = (dateString: string) => {
+      return dateHelper.formatDateToText(dateString, locale.value);
+    };
+
+    return {
+      formatDateString,
+    };
   },
 });
 </script>

@@ -1,7 +1,7 @@
 import useApi from 'src/composables/UseApi';
 
 export default function notebookService() {
-  const { get, post, put, remove, all } = useApi('notebooks');
+  const { get, post, put, remove, all } = useApi('notebook');
 
   return {
     get,

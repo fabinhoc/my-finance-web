@@ -99,7 +99,7 @@ export default defineComponent({
     const billToEdit: Ref<BillType | undefined> = ref();
     const $q = useQuasar();
     const notify = useNotify();
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     onMounted(() => {
       if (month.value) {
@@ -180,7 +180,10 @@ export default defineComponent({
 
     const setBillToEdit = async (id: number) => {
       const output = await billService.get(id);
-      output.due_date = dateHelper.formatDateToText(output.due_date);
+      output.due_date = dateHelper.formatDateToText(
+        output.due_date,
+        locale.value
+      );
       billToEdit.value = output;
       toggleDialog.value = true;
     };

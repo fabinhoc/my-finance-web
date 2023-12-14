@@ -5,5 +5,6 @@ export interface UserType {
   remember_me_token?: string | null;
   created_at: Date;
   updated_at: Date;
+  email_verified_at: Date;
   token: string;
 }

@@ -43,6 +43,39 @@ export default boot(({ app }) => {
         },
       },
     },
+    datetimeFormats: {
+      'en-US': {
+        short: {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        },
+        long: {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        },
+      },
+      'pt-BR': {
+        short: {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        },
+        long: {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        },
+      },
+    },
   });
 
   // Set i18n instance on app
