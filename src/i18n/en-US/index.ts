@@ -68,6 +68,16 @@ export default {
           save: 'Save',
           totalPaid: 'Total Paid',
         },
+        notebook: {
+          formTitle: 'Save notebook',
+          name: 'Name',
+          description: 'Description',
+        },
+        tag: {
+          formTitle: 'Save tag',
+          name: 'Name',
+          color: 'Color',
+        },
       },
       confirmText: 'Confirm',
       confirmMessage: 'Are you sure you want to delete?',

@@ -3,9 +3,11 @@
     <q-card bordered flat>
       <q-card-section>
         <NotebookPageCardTitle
-          :title="'Caderno de contas'"
-          :description="'Caderno de contas de casa'"
-          :id="1"
+          :title="notebook?.name"
+          :description="notebook?.description"
+          :id="notebook?.id ?? 0"
+          @edit-notebook="dialogNotebook = true"
+          @remove-notebook="deleteNotebook"
         />
       </q-card-section>
       <q-separator class="q-mt-md" inset />
@@ -55,6 +57,16 @@
     >
       <FormBill @toggleDialog="setToggleDialog" :bill="billToEdit" />
     </q-dialog>
+
+    <q-dialog
+      v-model="dialogNotebook"
+      persistent
+      :maximized="$q.platform.is.mobile"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <FormNotebook @toggleDialog="toogleNotebookDialog" :notebook="notebook" />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -67,7 +79,7 @@ import { storeToRefs } from 'pinia';
 import { useMonth } from 'src/stores/month.store';
 import { useYear } from 'src/stores/year.store';
 import useBillService from 'src/services/Bill.service';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import lodash from 'lodash';
 import TableBills from 'src/components/TableBills.vue';
 import { TaggableBillType } from 'src/types/TaggableBill.type';
@@ -78,6 +90,11 @@ import dateHelper from 'src/helpers/date.helper';
 import { useQuasar } from 'quasar';
 import useNotify from 'src/composables/UseNotify';
 import { useI18n } from 'vue-i18n';
+import FormNotebook from 'src/components/FormNotebook.vue';
+import { NotebookType } from 'src/types/Notebook.type';
+import useNotebookService from 'src/services/Notebook.service';
+import { useMenuStore } from 'src/stores/menu.store';
+import { useTagStore } from 'src/stores/tag.store';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -87,6 +104,7 @@ export default defineComponent({
     NotebookPageCardTitle,
     TableBills,
     FormBill,
+    FormNotebook,
   },
   setup() {
     const slide = ref('style');
@@ -94,6 +112,7 @@ export default defineComponent({
     const { year } = storeToRefs(useYear());
     const route = useRoute();
     const billService = useBillService();
+    const notebookService = useNotebookService();
     const bills: Ref<TaggableBillType[]> = ref([]);
     const showBills: Ref<boolean> = ref(false);
     const toggleDialog: Ref<boolean> = ref(false);
@@ -101,18 +120,29 @@ export default defineComponent({
     const $q = useQuasar();
     const notify = useNotify();
     const { t, locale } = useI18n();
+    const dialogNotebook: Ref<boolean> = ref(false);
+    const notebook: Ref<NotebookType | undefined> = ref();
+    const router = useRouter();
+    const { setUpdateMenuNotebook } = useMenuStore();
+    const { isRemovedTag } = storeToRefs(useTagStore());
+    const { setIsRemovedTag } = useTagStore();
 
     onMounted(() => {
       if (month.value) {
         setBills(month.value, year.value);
       }
+      loadNotebook();
     });
 
-    watch([month, year], async ([newMonthValue, newYearValue]) => {
-      if (newMonthValue) {
-        setBills(newMonthValue, newYearValue);
+    watch(
+      [month, year, isRemovedTag],
+      async ([newMonthValue, newYearValue]) => {
+        if (newMonthValue || isRemovedTag) {
+          setBills(newMonthValue, newYearValue);
+          setIsRemovedTag(false);
+        }
       }
-    });
+    );
 
     const setBills = async (month: MonthType, year: number) => {
       showBills.value = false;
@@ -232,6 +262,40 @@ export default defineComponent({
       }
     };
 
+    const loadNotebook = async () => {
+      const notebookId: number =
+        typeof route.params.id === 'object'
+          ? parseInt(route.params.id[0])
+          : parseInt(route.params.id);
+      const response: NotebookType = await notebookService.get(notebookId);
+      notebook.value = response;
+    };
+
+    const toogleNotebookDialog = () => {
+      dialogNotebook.value = false;
+      loadNotebook();
+    };
+
+    const deleteNotebook = () => {
+      const title = t('page.notebook.confirmText');
+      const message = t('page.notebook.confirmMessage');
+      $q.dialog({
+        title: title,
+        message: message,
+        cancel: {
+          text: t('page.notebook.cancel'),
+        },
+        persistent: true,
+      }).onOk(async () => {
+        if (notebook.value) {
+          await notebookService.remove(notebook.value.id);
+          notify.success(t('success'));
+          router.push({ name: 'dashboard' });
+          setUpdateMenuNotebook(true);
+        }
+      });
+    };
+
     return {
       slide,
       bills,
@@ -243,6 +307,11 @@ export default defineComponent({
       setNewBill,
       deleteBill,
       markBillAsPaid,
+      dialogNotebook,
+      loadNotebook,
+      toogleNotebookDialog,
+      notebook,
+      deleteNotebook,
     };
   },
 });

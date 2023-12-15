@@ -50,7 +50,7 @@
           <q-item-label header>
             {{ $t('menu.notebooks') }}
             <div class="col-1 column items-end" style="margin-top: -30px">
-              <q-btn round flat icon="add"></q-btn>
+              <q-btn round flat icon="add" @click="toggleDialog = true"></q-btn>
             </div>
           </q-item-label>
 
@@ -63,11 +63,22 @@
           <q-item-label header>
             {{ $t('menu.tags') }}
             <div class="col-1 column items-end" style="margin-top: -30px">
-              <q-btn round flat icon="add"></q-btn>
+              <q-btn
+                round
+                flat
+                icon="add"
+                @click="toggleTagDialog = true"
+              ></q-btn>
             </div>
           </q-item-label>
 
-          <MenuTag v-for="tag in tags" :key="tag.id" v-bind="tag" />
+          <MenuTag
+            v-for="tag in tags"
+            :key="tag.id"
+            v-bind="tag"
+            @edit-tag="setTagToEdit"
+            @remove-tag="removeTag"
+          />
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -82,11 +93,31 @@
         </transition>
       </router-view>
     </q-page-container>
+
+    <q-dialog
+      v-model="toggleDialog"
+      persistent
+      :maximized="$q.platform.is.mobile"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <FormNotebook @toggle-dialog="loadNotebooks" />
+    </q-dialog>
+
+    <q-dialog
+      v-model="toggleTagDialog"
+      persistent
+      :maximized="$q.platform.is.mobile"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <FormTag @toggle-dialog="loadTags" v-model:tag="tag" />
+    </q-dialog>
   </q-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { Ref, defineComponent, onMounted, ref, watch } from 'vue';
 import SelectLanguage from 'src/components/SelectLanguage.vue';
 import useAuthService from 'src/services/auth.service';
 import useNotebookService from 'src/services/Notebook.service';
@@ -97,6 +128,14 @@ import MenuNotebook from 'src/components/MenuNotebook.vue';
 import useTagService from 'src/services/Tag.service';
 import { TagType } from 'src/types/Tag.type';
 import MenuTag from 'src/components/MenuTag.vue';
+import FormNotebook from 'src/components/FormNotebook.vue';
+import FormTag from 'src/components/FormTag.vue';
+import { useMenuStore } from 'src/stores/menu.store';
+import { storeToRefs } from 'pinia';
+import useNotify from 'src/composables/UseNotify';
+import { useI18n } from 'vue-i18n';
+import { useQuasar } from 'quasar';
+import { useTagStore } from 'src/stores/tag.store';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -105,6 +144,8 @@ export default defineComponent({
     SelectLanguage,
     MenuNotebook,
     MenuTag,
+    FormNotebook,
+    FormTag,
   },
 
   setup() {
@@ -116,6 +157,15 @@ export default defineComponent({
     const tagService = useTagService();
     let notebooks = ref<NotebookType[]>([]);
     let tags = ref<TagType[]>([]);
+    const toggleDialog = ref(false);
+    const { setUpdateMenuNotebook } = useMenuStore();
+    const { menuNotebookData } = storeToRefs(useMenuStore());
+    const toggleTagDialog: Ref<boolean> = ref(false);
+    const tag: Ref<TagType | undefined> = ref();
+    const notify = useNotify();
+    const { t } = useI18n();
+    const $q = useQuasar();
+    const { setIsRemovedTag } = useTagStore();
 
     const handleLogout = async () => {
       await authService.logout();
@@ -123,9 +173,49 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      notebooks.value = await notebookService.all();
+      loadNotebooks();
       tags.value = await tagService.all();
     });
+
+    watch(menuNotebookData, async () => {
+      if (menuNotebookData.value) {
+        loadNotebooks();
+      }
+    });
+
+    const loadNotebooks = async () => {
+      notebooks.value = await notebookService.all();
+      toggleDialog.value = false;
+      setUpdateMenuNotebook(false);
+    };
+
+    const loadTags = async () => {
+      tags.value = await tagService.all();
+      toggleTagDialog.value = false;
+    };
+
+    const setTagToEdit = async (id: number) => {
+      tag.value = await tagService.get(id);
+      toggleTagDialog.value = true;
+    };
+
+    const removeTag = async (id: number) => {
+      const title = t('page.notebook.confirmText');
+      const message = t('page.notebook.confirmMessage');
+      $q.dialog({
+        title: title,
+        message: message,
+        cancel: {
+          text: t('page.notebook.cancel'),
+        },
+        persistent: true,
+      }).onOk(async () => {
+        await tagService.remove(id);
+        notify.success(t('success'));
+        loadTags();
+        setIsRemovedTag(true);
+      });
+    };
 
     return {
       leftDrawerOpen,
@@ -136,6 +226,13 @@ export default defineComponent({
       user,
       notebooks,
       tags,
+      toggleDialog,
+      loadNotebooks,
+      toggleTagDialog,
+      loadTags,
+      tag,
+      setTagToEdit,
+      removeTag,
     };
   },
 });

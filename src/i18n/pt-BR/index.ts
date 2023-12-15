@@ -68,6 +68,16 @@ export default {
           save: 'Salvar',
           totalPaid: 'Valor Pago',
         },
+        notebook: {
+          formTitle: 'Salvar caderno',
+          name: 'Nome',
+          description: 'Descrição',
+        },
+        tag: {
+          formTitle: 'Save tag',
+          name: 'Name',
+          color: 'Color',
+        },
       },
       confirmText: 'Confirmar ação',
       confirmMessage: 'Tem certeza de que deseja excluir?',
