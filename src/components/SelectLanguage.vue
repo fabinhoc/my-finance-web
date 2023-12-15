@@ -21,6 +21,8 @@ import { api } from 'src/boot/axios';
 import { useI18n } from 'vue-i18n';
 import { Languages } from './models';
 import { useQuasar } from 'quasar';
+import enUS from 'quasar/lang/en-US';
+import ptBR from 'quasar/lang/pt-BR';
 
 export default {
   setup() {
@@ -33,8 +35,17 @@ export default {
     ];
 
     const setLocale = () => {
-      api.defaults.headers.common['Accept-Language'] = locale.value;
-      $q.lang.set($q.lang[locale.value as string]);
+      api.defaults.headers.common['X-Localization'] = locale.value;
+
+      if (locale.value === 'en-US') {
+        $q.lang.set(enUS);
+        localStorage.setItem('user-lang', locale.value);
+      }
+
+      if (locale.value === 'pt-BR') {
+        $q.lang.set(ptBR);
+        localStorage.setItem('user-lang', locale.value);
+      }
     };
 
     return {

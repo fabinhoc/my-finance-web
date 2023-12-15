@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('login', {
       try {
         const { post } = useApi('auth/login');
         const data = await post(payload);
+
         console.log(data);
 
         this.user = data.user;

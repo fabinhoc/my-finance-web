@@ -36,13 +36,18 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   // check route is protected and is logged in
-  Router.beforeEach(async (to) => {
+  Router.beforeEach(async (to, from, next) => {
     const auth = useAuthStore();
-    if (to.meta.requiresAuth && !auth.isLoggedIn) {
-      return { name: 'login' };
-    }
-    if (to.name === 'login' && auth.isLoggedIn) {
-      return { name: 'dashboard' };
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+      if (!auth.isLoggedIn) {
+        next({ name: 'login' });
+      }
+      if (to.name === 'login' && auth.isLoggedIn) {
+        next({ name: 'dashboard' });
+      }
+      next();
+    } else {
+      next();
     }
   });
 

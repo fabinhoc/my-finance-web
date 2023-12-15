@@ -100,4 +100,12 @@ export default {
     november: 'Novembro',
     december: 'Dezembro',
   },
+  notify: {
+    billSaved: 'Conta salva com sucesso!',
+    billRemoved: 'Conta removida com sucesso!',
+  },
+  errors: {
+    network:
+      'Algo inesperado aconteceu. Por favor, tente novamente mais tarde.',
+  },
 };

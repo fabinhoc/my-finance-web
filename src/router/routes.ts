@@ -46,6 +46,9 @@ const routes: RouteRecordRaw[] = [
         component: () => import('src/pages/Notebook.page.vue'),
       },
     ],
+    meta: {
+      requiresAuth: true,
+    },
   },
 
   // Always leave this as last one,

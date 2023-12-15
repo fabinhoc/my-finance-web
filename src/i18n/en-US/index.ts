@@ -104,4 +104,7 @@ export default {
     billSaved: 'Bill saved with success!',
     billRemoved: 'Bill removed with success!',
   },
+  errors: {
+    network: 'Something went wrong with connection. Please, try later again.',
+  },
 };

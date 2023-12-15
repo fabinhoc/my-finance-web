@@ -20,6 +20,7 @@
         :expanded="false"
         @edit-bill-event="editBillEvent"
         @delete-bill-event="deleteBillEvent"
+        @mark-bill-as-paid="markBillAsPaid"
       >
         <q-td auto-width>
           <q-btn
@@ -66,6 +67,7 @@
                     :expanded="true"
                     @edit-bill-event="editBillEvent"
                     @delete-bill-event="deleteBillEvent"
+                    @mark-bill-as-paid="markBillAsPaid"
                   ></TableBillsTr>
                 </template>
               </q-table>
@@ -144,7 +146,7 @@ export default defineComponent({
       default: Array,
     },
   },
-  emits: ['editBillEvent', 'deleteBillEvent'],
+  emits: ['editBillEvent', 'deleteBillEvent', 'markBillAsPaid'],
   setup(props, { emit }) {
     const editBillEvent = (id: number) => {
       emit('editBillEvent', id);
@@ -152,10 +154,14 @@ export default defineComponent({
     const deleteBillEvent = (id: number) => {
       emit('deleteBillEvent', id);
     };
+    const markBillAsPaid = (id: number) => {
+      emit('markBillAsPaid', id);
+    };
     return {
       columns,
       editBillEvent,
       deleteBillEvent,
+      markBillAsPaid,
     };
   },
 });

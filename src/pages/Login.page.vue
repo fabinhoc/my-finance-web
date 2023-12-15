@@ -66,6 +66,7 @@ import { defineComponent, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import formValidation from 'boot/form/validations';
 import useNotify from 'src/composables/UseNotify';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'LoginPage',
@@ -73,6 +74,7 @@ export default defineComponent({
     const service = useAuthService();
     const router = useRouter();
     const notify = useNotify();
+    const { t } = useI18n();
 
     const form: Ref<LoginType> = ref({
       email: null,
@@ -84,7 +86,15 @@ export default defineComponent({
         await service.login(form.value);
         router.push({ name: 'dashboard' });
       } catch (error: any) {
-        notify.error(error.response.data.errors[0].message);
+        if (error.response) {
+          notify.error(error.response.data.message);
+          return;
+        }
+        let message = error.message;
+        if (error.message === 'Network Error') {
+          message = t('errors.network');
+        }
+        notify.error(message);
       }
     };
 

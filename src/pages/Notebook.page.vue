@@ -37,6 +37,7 @@
             :bills="bills"
             @edit-bill-event="setBillToEdit"
             @delete-bill-event="deleteBill"
+            @mark-bill-as-paid="markBillAsPaid"
           />
         </transition>
       </q-card-section>
@@ -210,6 +211,27 @@ export default defineComponent({
       });
     };
 
+    const markBillAsPaid = async (id: number) => {
+      try {
+        const payload = {
+          is_paid: true,
+        };
+        await billService.put(id, payload);
+        setBills(month.value, year.value);
+        notify.success(t('success'));
+      } catch (error: any) {
+        if (error.response) {
+          notify.error(error.response.data.message);
+          return;
+        }
+        let message = error.message;
+        if (error.message === 'Network Error') {
+          message = t('errors.network');
+        }
+        notify.error(message);
+      }
+    };
+
     return {
       slide,
       bills,
@@ -220,6 +242,7 @@ export default defineComponent({
       billToEdit,
       setNewBill,
       deleteBill,
+      markBillAsPaid,
     };
   },
 });

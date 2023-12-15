@@ -297,9 +297,17 @@ export default defineComponent({
         await billService.post(payload);
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
-        notify.success(t('notify.billSaved'));
+        notify.success(t('success'));
       } catch (error: any) {
-        notify.error(error.response.data.errors[0].message);
+        if (error.response) {
+          notify.error(error.response.data.message);
+          return;
+        }
+        let message = error.message;
+        if (error.message === 'Network Error') {
+          message = t('errors.network');
+        }
+        notify.error(message);
       }
     };
 
@@ -308,9 +316,17 @@ export default defineComponent({
         await billService.put(props.bill?.id, payload);
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
-        notify.success(t('notify.billSaved'));
+        notify.success(t('success'));
       } catch (error: any) {
-        notify.error(error.response.data.errors[0].message);
+        if (error.response) {
+          notify.error(error.response.data.message);
+          return;
+        }
+        let message = error.message;
+        if (error.message === 'Network Error') {
+          message = t('errors.network');
+        }
+        notify.error(message);
       }
     };
 

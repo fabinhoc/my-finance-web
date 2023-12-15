@@ -73,12 +73,14 @@
     </q-drawer>
 
     <q-page-container>
-      <transition
-        enter-active-class="animated fadeIn slower"
-        leave-active-class="animated fadeOut slower"
-      >
-        <router-view />
-      </transition>
+      <router-view v-slot="{ Component, route }">
+        <transition
+          enter-active-class="animated fadeIn slower"
+          leave-active-class="animated fadeOut slower"
+        >
+          <component :is="Component" :key="route.path" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>

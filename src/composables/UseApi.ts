@@ -40,7 +40,7 @@ export default function useApi(url: string) {
   const remove = async (id: number) => {
     try {
       const { data } = await api.delete(`${url}/${id}`);
-      return data;
+      return data.data;
     } catch (error: any | unknown) {
       throw error;
     }

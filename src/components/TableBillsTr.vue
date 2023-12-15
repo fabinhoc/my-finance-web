@@ -49,9 +49,10 @@
         <q-btn
           flat
           round
-          icon="money_off_csred"
-          :color="propsRow.row.is_paid ? 'success' : 'grey'"
+          icon="check"
+          :color="'positive'"
           size="sm"
+          @click="$emit('markBillAsPaid', propsRow.row.id)"
         >
           <q-tooltip
             anchor="bottom middle"
