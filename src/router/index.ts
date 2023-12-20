@@ -42,11 +42,17 @@ export default route(function (/* { store, ssrContext } */) {
       if (!auth.isLoggedIn) {
         next({ name: 'login' });
       }
-      if (to.name === 'login' && auth.isLoggedIn) {
-        next({ name: 'dashboard' });
+      if (!auth.user.email_verified_at) {
+        next({ name: 'email-verification' });
       }
       next();
     } else {
+      if (to.name === 'login' && auth.isLoggedIn) {
+        if (!auth.user.email_verified_at) {
+          next({ name: 'email-verification' });
+        }
+        next({ name: 'dashboard' });
+      }
       next();
     }
   });

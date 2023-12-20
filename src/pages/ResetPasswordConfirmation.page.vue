@@ -9,34 +9,48 @@
       >
         <q-card-section>
           <q-img
-            src="/src/assets/logo-tanotado.png"
+            src="/src/assets/logo.png"
             class="q-mb-lg"
             style="max-width: 200px"
           ></q-img>
         </q-card-section>
         <q-card-section>
+          <q-avatar
+            size="80px"
+            font-size="32px"
+            color="grey-3"
+            text-color="primary"
+            icon="email"
+          />
+        </q-card-section>
+        <q-card-section>
           <p class="text-h5 text-weight-medium">
-            {{ $t('page.forgotPassword.title') }}
+            {{ $t('page.resetPasswordConfirmation.title') }}
           </p>
         </q-card-section>
         <q-card-section>
           <p class="">
-            {{ $t('page.forgotPassword.message') }}
+            {{ $t('page.resetPasswordConfirmation.message') }}
           </p>
         </q-card-section>
         <q-card-section>
-          <FormForgotPassword />
-        </q-card-section>
-        <q-card-section>
           <p class="">
-            {{ $t('page.forgotPassword.remember') }}
+            {{ $t('page.resetPasswordConfirmation.emailNotSent') }}
             <q-btn
               flat
               color="accent"
-              @click="$router.push({ name: 'login' })"
-              >{{ $t('page.forgotPassword.signin') }}</q-btn
+              @click="$router.push({ name: 'forgot-password' })"
+              >{{ $t('page.resetPasswordConfirmation.resend') }}</q-btn
             >
           </p>
+        </q-card-section>
+        <q-card-section>
+          <q-btn
+            flat
+            color="secondary"
+            @click="$router.push({ name: 'login' })"
+            >{{ $t('page.resetPasswordConfirmation.backToLogin') }}</q-btn
+          >
         </q-card-section>
       </q-card>
     </div>
@@ -44,16 +58,14 @@
 </template>
 
 <script lang="ts">
-import FormForgotPassword from 'src/components/FormForgotPassword.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'ForgotPasswordPage',
-  components: {
-    FormForgotPassword,
-  },
+  name: 'ResetPasswordConfirmationPage',
   setup() {
     return {};
   },
 });
 </script>
+
+<style scoped></style>

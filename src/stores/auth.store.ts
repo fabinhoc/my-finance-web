@@ -18,8 +18,6 @@ export const useAuthStore = defineStore('login', {
         const { post } = useApi('auth/login');
         const data = await post(payload);
 
-        console.log(data);
-
         this.user = data.user;
         this.token = data.access_token;
 
@@ -54,11 +52,7 @@ export const useAuthStore = defineStore('login', {
     async logout() {
       try {
         const response = await api.post('auth/logout');
-        this.user = {} as UserType;
-        this.token = '';
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-
+        this.removeUserStore();
         return response;
       } catch (error: any | unknown) {
         throw error;
@@ -73,10 +67,61 @@ export const useAuthStore = defineStore('login', {
         throw error;
       }
     },
+
+    async setUser() {
+      try {
+        const { data } = await api.get(`user/${this.user.id}`);
+        const user: UserType = data.data;
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
+      } catch (error: any | unknown) {
+        throw error;
+      }
+    },
+
+    resendEmailVerfication() {
+      try {
+        return api.post('auth/email/verification-notification');
+      } catch (error: any | unknown) {
+        throw error;
+      }
+    },
+
+    verifyEmail(url: string) {
+      try {
+        url = url.replace(process.env.API_URL as string, '');
+        return api.get(url);
+      } catch (error: unknown) {
+        throw error;
+      }
+    },
+
+    removeUserStore() {
+      this.user = {} as UserType;
+      this.token = '';
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    },
+
+    forgotPassword(payload: any) {
+      try {
+        return api.post('auth/forgot-password', payload);
+      } catch (error: unknown) {
+        throw error;
+      }
+    },
+
+    resetPassword(payload: any) {
+      try {
+        return api.post('auth/reset-password', payload);
+      } catch (error: unknown) {
+        throw error;
+      }
+    },
   },
   getters: {
     isLoggedIn: (state) => {
-      return !!state.token && !!state.user.email_verified_at;
+      return !!state.token;
     },
   },
 });

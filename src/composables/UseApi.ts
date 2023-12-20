@@ -52,5 +52,6 @@ export default function useApi(url: string) {
     post,
     put,
     remove,
+    api,
   };
 }

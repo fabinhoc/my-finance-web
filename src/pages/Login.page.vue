@@ -50,7 +50,9 @@
       </q-form>
 
       <div class="q-mt-lg">
-        <q-btn color="accent" flat>{{ $t('page.login.forgotPassword') }}</q-btn>
+        <q-btn color="accent" flat to="/auth/forgot-password">{{
+          $t('page.login.forgotPassword')
+        }}</q-btn>
         <q-btn color="accent" flat to="/auth/sign-up">{{
           $t('page.login.signUp')
         }}</q-btn>

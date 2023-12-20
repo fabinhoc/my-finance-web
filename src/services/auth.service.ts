@@ -35,9 +35,49 @@ export default function useAuthService() {
     return user;
   };
 
+  const resendVerification = () => {
+    try {
+      const { resendEmailVerfication } = useAuthStore();
+      return resendEmailVerfication();
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
+  const verifyEmail = (url: string) => {
+    try {
+      const { verifyEmail } = useAuthStore();
+      return verifyEmail(url);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
+  const forgotPassword = (payload: any) => {
+    try {
+      const { forgotPassword } = useAuthStore();
+      return forgotPassword(payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
+  const resetPassword = (payload: any) => {
+    try {
+      const { resetPassword } = useAuthStore();
+      return resetPassword(payload);
+    } catch (error: unknown) {
+      throw error;
+    }
+  };
+
   return {
     login,
     logout,
     register,
+    resendVerification,
+    verifyEmail,
+    forgotPassword,
+    resetPassword,
   };
 }

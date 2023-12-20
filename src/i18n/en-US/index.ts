@@ -83,6 +83,75 @@ export default {
       confirmMessage: 'Are you sure you want to delete?',
       cancel: 'Cancelar',
     },
+    profile: {
+      form: {
+        profile: {
+          name: 'Name',
+          email: 'Email',
+          save: 'Save',
+        },
+        passwordReset: {
+          password: 'Password',
+          confirmPassword: 'Confirm Password',
+          save: 'Save',
+          cancel: 'Cancel',
+        },
+      },
+      title: 'Profile',
+      description: 'Edit your profile',
+      about: 'About you',
+      passwordChange: 'Password change',
+      account: 'Account',
+      deleteAccount: 'Delete your account',
+      dialogTitle: 'Delete account',
+      dialogDescription:
+        'When removing your account you will lose all records saved in that application.',
+    },
+    emailVerify: {
+      title: 'Verify your email',
+      message: 'We have sent you verification email {email}',
+      checkIt: 'Please check it',
+      notReceivedYet: "Didn't receive an email?",
+      resend: 'Resend',
+      backToLogin: 'Back to Login',
+    },
+    verify: {
+      backToLogin: 'Back to Login',
+    },
+    forgotPassword: {
+      title: 'Reset Password',
+      message: 'Please, type your e-mail.',
+      remember: 'Remember It?',
+      signin: 'Sign in',
+      form: {
+        forgotPassword: {
+          email: 'Email',
+          reset: 'Reset',
+        },
+      },
+    },
+    resetPasswordConfirmation: {
+      title: 'Recouver your password',
+      message: 'We have sent you a password recouver email. Please check it.',
+      emailNotSent: "Didn't receive an email?",
+      resend: 'Resend',
+      backToLogin: 'Back to login',
+    },
+    resetPassword: {
+      title: 'Create new password',
+      message: 'Please, type your new password.',
+      save: 'Save',
+      remember: 'Remember It?',
+      signin: 'Sign in',
+      messageSuccess:
+        'Password updated with success. You are been redirecting for login page in: ',
+      seconds: '{seconds} second(s)',
+      formResetPassword: {
+        password: 'Password',
+        passwordConfirmation: 'Confirm Password',
+        save: 'Save',
+      },
+    },
   },
   validations: {
     required: 'This field is required',

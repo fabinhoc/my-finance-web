@@ -20,6 +20,26 @@ const routes: RouteRecordRaw[] = [
         name: 'sign-up',
         component: () => import('src/pages/SignUp.page.vue'),
       },
+      {
+        path: 'email-verification',
+        name: 'email-verification',
+        component: () => import('src/pages/EmailVerify.page.vue'),
+      },
+      {
+        path: 'verify',
+        name: 'verify',
+        component: () => import('src/pages/Verify.page.vue'),
+      },
+      {
+        path: 'reset-password-confirmation',
+        name: 'resetPasswordConfirmation',
+        component: () => import('src/pages/ResetPasswordConfirmation.page.vue'),
+      },
+      {
+        path: 'reset-password',
+        name: 'resetPassword',
+        component: () => import('src/pages/ResetPassword.page.vue'),
+      },
     ],
   },
   {
@@ -44,6 +64,20 @@ const routes: RouteRecordRaw[] = [
         path: ':id/:name',
         name: 'notebooks',
         component: () => import('src/pages/Notebook.page.vue'),
+      },
+    ],
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/profile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'profile',
+        component: () => import('src/pages/Profile.page.vue'),
       },
     ],
     meta: {

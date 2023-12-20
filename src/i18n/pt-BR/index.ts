@@ -83,6 +83,78 @@ export default {
       confirmMessage: 'Tem certeza de que deseja excluir?',
       cancel: 'Cancelar',
     },
+    profile: {
+      form: {
+        profile: {
+          name: 'Nome',
+          email: 'E-mail',
+          save: 'Salvar',
+        },
+        passwordReset: {
+          password: 'Senha',
+          confirmPassword: 'Confirmar Senha',
+          save: 'Salvar',
+          cancel: 'Cancelar',
+        },
+      },
+      title: 'Perfil',
+      description: 'Edita seu perfil',
+      about: 'Sobre você',
+      passwordChange: 'Mudar senha',
+      account: 'Conta',
+      deleteAccount: 'Excluir sua conta',
+      dialogTitle: 'Excluir Conta',
+      dialogDescription:
+        'Ao excluir sua conta você perderá todos os registros salvos nesse aplicativo.',
+    },
+    emailVerify: {
+      title: 'Verifique seu e-mail',
+      message: 'Enviamos um e-mail de verificação para {email}',
+      checkIt: 'Por favor, verifique seu e-mail',
+      notReceivedYet: 'Não recebeu nenhum e-mail?',
+      resend: 'Reenviar',
+      backToLogin: 'Voltar para a página de login',
+    },
+    verify: {
+      backToLogin: 'Voltar para a página de login',
+    },
+    forgotPassword: {
+      title: 'Recuperar senha',
+      message: 'Por favor, insira seu endereço de e-mail.',
+      email: 'E-mail',
+      reset: 'Enviar',
+      remember: 'Lembrou a senha?',
+      signin: 'Entrar',
+      form: {
+        forgotPassword: {
+          email: 'E-mail',
+          reset: 'Enviar',
+        },
+      },
+    },
+    resetPasswordConfirmation: {
+      title: 'Recuperar senha',
+      message:
+        'Enviamos uma mensagem para seu endereço de e-mail. Por favor, verifique seu e-mail.',
+      emailNotSent: 'Não recebeu nenhum e-mail?',
+      resend: 'Reenviar',
+      backToLogin: 'Voltar para login',
+    },
+    resetPassword: {
+      title: 'Criar nova senha',
+      message: 'Por favor, digite sua nova senha.',
+      save: 'Salvar',
+      remember: 'Lembrou a senha?',
+      signin: 'Entrar',
+      messageSuccess:
+        'Senha alterada com successo. Você será redirecionado para a página de login em: ',
+      seconds: '{seconds} segundos(s)',
+      formResetPassword: {
+        password: 'Senha',
+        passwordConfirmation: 'Confirmar senha',
+        save: 'Salvar',
+      },
+    },
   },
   validations: {
     required: 'Este campo é obrigatório',

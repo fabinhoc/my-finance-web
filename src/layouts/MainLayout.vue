@@ -20,7 +20,12 @@
 
         <SelectLanguage />
 
-        <q-btn icon="account_circle" flat round />
+        <q-btn
+          icon="account_circle"
+          flat
+          round
+          @click="$router.push({ name: 'profile' })"
+        />
         <q-btn
           icon="logout"
           flat
@@ -41,8 +46,8 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">{{ user.name }}</div>
-          <div>{{ user.email }}</div>
+          <div class="text-weight-bold">{{ user?.name }}</div>
+          <div>{{ user?.email }}</div>
         </div>
       </q-img>
       <q-scroll-area class="scroll-area">
@@ -117,7 +122,7 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, onMounted, ref, watch } from 'vue';
+import { Ref, defineComponent, onMounted, ref, watch, computed } from 'vue';
 import SelectLanguage from 'src/components/SelectLanguage.vue';
 import useAuthService from 'src/services/auth.service';
 import useNotebookService from 'src/services/Notebook.service';
@@ -152,7 +157,10 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const authService = useAuthService();
     const router = useRouter();
-    const { user } = useAuthStore();
+    const user = computed(() => {
+      const { user } = useAuthStore();
+      return user;
+    });
     const notebookService = useNotebookService();
     const tagService = useTagService();
     let notebooks = ref<NotebookType[]>([]);
@@ -177,7 +185,7 @@ export default defineComponent({
       tags.value = await tagService.all();
     });
 
-    watch(menuNotebookData, async () => {
+    watch([menuNotebookData, user], async () => {
       if (menuNotebookData.value) {
         loadNotebooks();
       }

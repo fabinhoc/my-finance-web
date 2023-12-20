@@ -9,32 +9,32 @@
       >
         <q-card-section>
           <q-img
-            src="/src/assets/logo-tanotado.png"
+            src="/src/assets/logo.png"
             class="q-mb-lg"
             style="max-width: 200px"
           ></q-img>
         </q-card-section>
         <q-card-section>
           <p class="text-h5 text-weight-medium">
-            {{ $t('page.forgotPassword.title') }}
+            {{ $t('page.resetPassword.title') }}
           </p>
         </q-card-section>
         <q-card-section>
           <p class="">
-            {{ $t('page.forgotPassword.message') }}
+            {{ $t('page.resetPassword.message') }}
           </p>
         </q-card-section>
         <q-card-section>
-          <FormForgotPassword />
+          <FormResetPassword />
         </q-card-section>
         <q-card-section>
           <p class="">
-            {{ $t('page.forgotPassword.remember') }}
+            {{ $t('page.resetPassword.remember') }}
             <q-btn
               flat
               color="accent"
               @click="$router.push({ name: 'login' })"
-              >{{ $t('page.forgotPassword.signin') }}</q-btn
+              >{{ $t('page.resetPassword.signin') }}</q-btn
             >
           </p>
         </q-card-section>
@@ -44,16 +44,18 @@
 </template>
 
 <script lang="ts">
-import FormForgotPassword from 'src/components/FormForgotPassword.vue';
+import FormResetPassword from 'src/components/FormResetPassword.vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'ForgotPasswordPage',
+  name: 'ResetPasswordPage',
   components: {
-    FormForgotPassword,
+    FormResetPassword,
   },
   setup() {
     return {};
   },
 });
 </script>
+
+<style scoped></style>
