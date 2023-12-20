@@ -104,10 +104,10 @@ export default defineComponent({
 
     const saveNotebook = async () => {
       try {
-        await notebookService.post(form.value);
+        const response = await notebookService.post(form.value);
         notify.success(t('success'));
         closeDialog.value = false;
-        emit('toggleDialog', closeDialog.value);
+        emit('toggleDialog', { close: closeDialog.value, notebook: response });
       } catch (error: any) {
         if (error.response) {
           notify.error(error.response.data.message);
@@ -126,7 +126,10 @@ export default defineComponent({
         await notebookService.put(props.notebook?.id, form.value);
         notify.success(t('success'));
         closeDialog.value = false;
-        emit('toggleDialog', closeDialog.value);
+        emit('toggleDialog', {
+          close: closeDialog.value,
+          notebook: props.notebook,
+        });
       } catch (error: any) {
         if (error.response) {
           notify.error(error.response.data.message);
