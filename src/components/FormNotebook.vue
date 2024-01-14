@@ -92,13 +92,13 @@ export default defineComponent({
       }
     });
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
       if (props.notebook) {
-        editNotebook();
+        await editNotebook();
         setUpdateMenuNotebook(true);
         return;
       }
-      saveNotebook();
+      await saveNotebook();
       setUpdateMenuNotebook(true);
     };
 
