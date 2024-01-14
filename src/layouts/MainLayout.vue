@@ -177,6 +177,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      setUpdateMenuNotebook(true);
       loadNotebooks();
       tags.value = await tagService.all();
     });
