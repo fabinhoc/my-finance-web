@@ -123,7 +123,11 @@ export default defineComponent({
 
     const editNotebook = async () => {
       try {
-        await notebookService.put(props.notebook?.id, form.value);
+        const data = {
+          name: form.value.name,
+          description: form.value.description,
+        };
+        await notebookService.put(props.notebook?.id, data);
         notify.success(t('success'));
         closeDialog.value = false;
         emit('toggleDialog', {
