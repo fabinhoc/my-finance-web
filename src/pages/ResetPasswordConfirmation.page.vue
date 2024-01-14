@@ -9,7 +9,7 @@
       >
         <q-card-section>
           <q-img
-            src="/src/assets/logo.png"
+            src="/logo.png"
             class="q-mb-lg"
             style="max-width: 200px"
           ></q-img>

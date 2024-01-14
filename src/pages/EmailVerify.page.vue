@@ -7,11 +7,7 @@
         :square="false"
         style="background-color: transparent"
       >
-        <q-img
-          src="/src/assets/logo.png"
-          class="q-mb-lg"
-          style="max-width: 200px"
-        ></q-img>
+        <q-img src="/logo.png" class="q-mb-lg" style="max-width: 200px"></q-img>
         <q-card-section>
           <q-avatar
             size="80px"

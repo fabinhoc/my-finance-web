@@ -1,11 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly" align="center">
     <div class="col-md-3 col-sm-6 col-xs-10">
-      <q-img
-        src="/src/assets/logo.png"
-        class="q-mb-lg"
-        style="max-width: 100px"
-      ></q-img>
+      <q-img src="/logo.png" class="q-mb-lg" style="max-width: 100px"></q-img>
       <q-form ref="myForm" class="q-gutter-y-lg" @submit.prevent="handleLogin">
         <q-input
           autofocus
