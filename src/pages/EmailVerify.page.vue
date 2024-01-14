@@ -64,8 +64,8 @@ export default defineComponent({
 
     const resend = async () => {
       try {
-        const { data } = await service.resendVerification();
-        notify.success(data.message);
+        await service.resendVerification();
+        notify.success(t('success'));
       } catch (error: any) {
         if (error.response) {
           notify.error(error.response.data.message);

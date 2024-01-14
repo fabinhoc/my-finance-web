@@ -93,11 +93,13 @@ import { defineComponent, ref } from 'vue';
 import useAuthService from 'src/services/auth.service';
 import { RegisterType } from 'src/types/Register.type';
 import formValidation from 'boot/form/validations';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'SignUpPage',
   setup() {
     const service = useAuthService();
+    const router = useRouter();
 
     const form = ref({
       name: null,
@@ -114,6 +116,7 @@ export default defineComponent({
           password: form.value.password,
           password_confirmation: form.value.password_confirmation,
         } as RegisterType);
+        await router.push({ name: 'email-verification' });
       } catch (error) {}
     };
 

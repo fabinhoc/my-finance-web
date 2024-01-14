@@ -61,8 +61,17 @@ export const useAuthStore = defineStore('login', {
 
     async register(payload: RegisterType) {
       try {
-        const user: UserType = await api.post('auth/register', payload);
-        return user;
+        const { data } = await api.post('auth/register', payload);
+        this.user = data.data.user;
+        this.token = data.data.access_token;
+
+        localStorage.setItem('user', JSON.stringify(this.user));
+        localStorage.setItem('token', this.token);
+        api.defaults.headers.common[
+          'Authorization'
+        ] = `Bearer ${data.data.access_token}`;
+
+        return data.data.user;
       } catch (error: any | unknown) {
         throw error;
       }
