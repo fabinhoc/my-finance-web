@@ -273,7 +273,6 @@ export default defineComponent({
       const isFormCorrect = await v$.value.$validate();
       if (!isFormCorrect) return;
       const id = props.bill?.id;
-      console.log(form.value);
       const payload: BillTypeDto = {
         name: form.value.name,
         notebook_id: form.value.notebook?.id,
