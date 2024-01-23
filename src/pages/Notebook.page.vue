@@ -187,7 +187,8 @@ export default defineComponent({
       const totalPriceBills = lodash.sumBy(bills, (bill: BillType) => {
         return parseFloat(bill.price);
       });
-      const totalPaid = lodash.sumBy(bills, (bill: BillType) => {
+      const billsPaid = lodash.filter(bills, 'is_paid');
+      const totalPaid = lodash.sumBy(billsPaid, (bill: BillType) => {
         return parseFloat(bill.total_paid);
       });
 

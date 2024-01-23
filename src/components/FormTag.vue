@@ -63,11 +63,12 @@
 
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { Ref, defineComponent, ref, onMounted, watch } from 'vue';
+import { Ref, defineComponent, ref, onMounted } from 'vue';
 import { required } from '@vuelidate/validators';
 import useNotify from 'src/composables/UseNotify';
 import { useI18n } from 'vue-i18n';
 import useTagService from 'src/services/Tag.service';
+import { TagInputType } from 'src/types/inputs/Tag.input.type';
 
 export default defineComponent({
   emits: ['toggleDialog'],
@@ -78,11 +79,11 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const form: Ref<any> = ref({
+    const form: Ref<TagInputType> = ref({
       name: null,
       color: null,
     });
-    const rules = {
+    const rules: any = {
       name: { required },
       color: { required },
     };
