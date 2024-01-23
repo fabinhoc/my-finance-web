@@ -95,7 +95,10 @@ export default defineComponent({
 
     onMounted(() => {
       if (props.tag) {
-        form.value = props.tag;
+        form.value = {
+          name: props.tag.name,
+          color: props.tag.color,
+        };
       }
     });
 
