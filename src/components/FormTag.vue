@@ -131,7 +131,12 @@ export default defineComponent({
 
     const editTag = async () => {
       try {
-        await tagService.put(props.tag?.id, form.value);
+        const data = {
+          name: form.value.name,
+          color: form.value.color,
+          user_id: form.value.user_id,
+        };
+        await tagService.put(props.tag?.id, data);
         notify.success(t('success'));
         closeDialog.value = false;
         emit('toggleDialog', closeDialog.value);
