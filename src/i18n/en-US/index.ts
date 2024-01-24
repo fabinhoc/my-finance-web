@@ -48,6 +48,17 @@ export default {
           },
         },
       },
+      card: {
+        bills: {
+          tooltips: {
+            pending: 'Pendente',
+            paid: 'Pago',
+            markAsPaid: 'Marcar como pago',
+            edit: 'Editar',
+            remove: 'Excluir',
+          },
+        },
+      },
       form: {
         bills: {
           name: 'Name',

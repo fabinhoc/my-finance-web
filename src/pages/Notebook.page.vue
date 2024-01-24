@@ -29,7 +29,26 @@
         width="35%"
         style="margin: 0 auto"
       />
-      <q-card-section padding class="q-mt-lg">
+      <q-card-section>
+        <q-btn
+          icon="grid_view"
+          flat
+          fab
+          @click="toggleUserView(UserViewEnum.DETAIL)"
+        />
+        <q-btn
+          icon="view_list"
+          flat
+          fab
+          @click="toggleUserView(UserViewEnum.LIST)"
+        />
+        <q-btn icon="content_copy" flat fab color="primary" />
+      </q-card-section>
+      <q-card-section
+        padding
+        class="q-mt-lg"
+        v-if="userView === UserViewEnum.LIST"
+      >
         <transition
           enter-active-class="animated backInLeft slower"
           leave-active-class="animated backOutRight slower"
@@ -42,6 +61,13 @@
             @mark-bill-as-paid="markBillAsPaid"
           />
         </transition>
+      </q-card-section>
+      <q-card-section v-else-if="userView === UserViewEnum.DETAIL">
+        <div class="row q-col-gutter-md">
+          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12">
+            <BillCard />
+          </div>
+        </div>
       </q-card-section>
     </q-card>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
@@ -95,6 +121,8 @@ import { NotebookType } from 'src/types/Notebook.type';
 import useNotebookService from 'src/services/Notebook.service';
 import { useMenuStore } from 'src/stores/menu.store';
 import { useTagStore } from 'src/stores/tag.store';
+import UserViewEnum from 'src/types/enums/UserView.enum';
+import BillCard from 'src/components/BillCard.vue';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -105,8 +133,10 @@ export default defineComponent({
     TableBills,
     FormBill,
     FormNotebook,
+    BillCard,
   },
   setup() {
+    const userView: Ref<string> = ref(UserViewEnum.DETAIL);
     const slide = ref('style');
     const { month } = storeToRefs(useMonth());
     const { year } = storeToRefs(useYear());
@@ -297,6 +327,10 @@ export default defineComponent({
       });
     };
 
+    const toggleUserView = (value: string) => {
+      userView.value = value;
+    };
+
     return {
       slide,
       bills,
@@ -313,6 +347,9 @@ export default defineComponent({
       toogleNotebookDialog,
       notebook,
       deleteNotebook,
+      userView,
+      toggleUserView,
+      UserViewEnum,
     };
   },
 });
