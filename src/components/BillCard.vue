@@ -3,7 +3,7 @@
     <q-card-section class="q-mb-none q-pb-none">
       <div class="row">
         <div class="col">
-          <span class="text-subtitle1 text-weight-medium">Cartão Stéfany</span>
+          <span class="text-h6 text-weight-medium">Cartão Stéfany</span>
         </div>
         <q-space />
         <div class="col-1 column items-end">
@@ -12,15 +12,13 @@
       </div>
     </q-card-section>
     <q-card-section class="q-pt-none">
-      <div class="text-caption text-weight-regular text-grey-6">Pendente</div>
-      <p style="font-size: 0.65rem" class="text-weight-regular">
-        Total: R$ 2.000,00
-      </p>
+      <div class="text-subtitle2 text-weight-regular text-grey-6">Pendente</div>
+      <p class="text-weight-regular">Total: R$ 2.000,00</p>
     </q-card-section>
     <q-card-section class="q-pb-none">
       <div class="row">
         <div class="col">
-          <span class="text-body2 text-weight-light text-grey-7"
+          <span class="text-subtitle1 text-weight-light text-grey-7"
             >Cartão Nubank</span
           >
         </div>
@@ -40,7 +38,7 @@
       </div>
     </q-card-section>
     <q-card-section class="q-pt-none q-pb-none">
-      <div style="font-size: 0.75rem" class="text-weight-regular">
+      <div class="text-weight-regular">
         <span>R$ 2000,00</span>
         <q-icon name="calendar_month" class="q-ml-sm"></q-icon>
         <span>25/01/2024</span>
@@ -48,7 +46,7 @@
     </q-card-section>
     <q-card-section class="q-pt-none">
       <div>
-        <q-btn flat round icon="check" :color="'positive'" size="xs">
+        <q-btn flat round icon="check" :color="'positive'" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -57,7 +55,7 @@
             {{ $t('page.notebook.card.bills.tooltips.markAsPaid') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="edit" color="info" size="xs">
+        <q-btn flat round icon="edit" color="info" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -66,7 +64,7 @@
             {{ $t('page.notebook.card.bills.tooltips.edit') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="delete" color="negative" size="xs">
+        <q-btn flat round icon="delete" color="negative" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -109,7 +107,7 @@
     </q-card-section>
     <q-card-section class="q-pt-none">
       <div>
-        <q-btn flat round icon="check" :color="'positive'" size="xs">
+        <q-btn flat round icon="check" :color="'positive'" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -118,7 +116,7 @@
             {{ $t('page.notebook.card.bills.tooltips.markAsPaid') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="edit" color="info" size="xs">
+        <q-btn flat round icon="edit" color="info" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -127,7 +125,7 @@
             {{ $t('page.notebook.card.bills.tooltips.edit') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="delete" color="negative" size="xs">
+        <q-btn flat round icon="delete" color="negative" size="sm">
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
