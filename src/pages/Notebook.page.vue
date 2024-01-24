@@ -29,7 +29,7 @@
         width="35%"
         style="margin: 0 auto"
       />
-      <q-card-section>
+      <q-card-section class="text-center centered">
         <q-btn
           icon="grid_view"
           flat
