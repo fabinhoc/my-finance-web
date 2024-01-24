@@ -158,7 +158,6 @@ export default defineComponent({
     BillTagCard,
   },
   setup() {
-    const userView: Ref<string> = ref(UserViewEnum.DETAIL);
     const slide = ref('style');
     const { month } = storeToRefs(useMonth());
     const { year } = storeToRefs(useYear());
@@ -170,6 +169,9 @@ export default defineComponent({
     const toggleDialog: Ref<boolean> = ref(false);
     const billToEdit: Ref<BillType | undefined> = ref();
     const $q = useQuasar();
+    const userView: Ref<string> = ref(
+      $q.platform.is.mobile ? UserViewEnum.DETAIL : UserViewEnum.LIST
+    );
     const notify = useNotify();
     const { t, locale } = useI18n();
     const dialogNotebook: Ref<boolean> = ref(false);
