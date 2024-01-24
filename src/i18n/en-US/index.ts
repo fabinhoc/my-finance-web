@@ -53,12 +53,14 @@ export default {
       card: {
         bills: {
           tooltips: {
-            pending: 'Pendente',
-            paid: 'Pago',
-            markAsPaid: 'Marcar como pago',
-            edit: 'Editar',
-            remove: 'Excluir',
+            pending: 'Pending',
+            paid: 'Paid',
+            markAsPaid: 'Mark as paid',
+            edit: 'Edit',
+            remove: 'Delete',
           },
+          total: 'Total',
+          totalPaid: 'Total Paid',
         },
       },
       form: {

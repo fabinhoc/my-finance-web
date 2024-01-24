@@ -27,7 +27,9 @@
         </q-tooltip>
       </span>
       <div v-else class="text-subtitle2 text-weight-regular text-grey-6">
-        {{ $t('page.notebook.card.bills.tooltips.pending') }}
+        {{
+          !bill?.tag_id ? $t('page.notebook.card.bills.tooltips.pending') : '--'
+        }}
       </div>
       <div class="text-weight-regular">
         <span>{{ $n(parseFloat(bill?.price), 'currency') }}</span>
