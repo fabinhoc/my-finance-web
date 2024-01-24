@@ -64,8 +64,28 @@
       </q-card-section>
       <q-card-section v-else-if="userView === UserViewEnum.DETAIL">
         <div class="row q-col-gutter-md">
-          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12">
-            <BillCard />
+          <div
+            v-for="bill in bills"
+            :key="bill.id"
+            class="col-md-6 col-lg-3 col-sm-6 col-xs-12"
+          >
+            <BillCard
+              :bill="bill"
+              @edit-bill-event="setBillToEdit"
+              @delete-bill-event="deleteBill"
+              @mark-bill-as-paid="markBillAsPaid"
+            >
+              <q-expansion-item expand-separator v-if="bill?.tag_id">
+                <div v-for="tagBill in bill.bills" :key="tagBill.id">
+                  <BillTagCard
+                    :tagBill="tagBill"
+                    @edit-bill-event="setBillToEdit"
+                    @delete-bill-event="deleteBill"
+                    @mark-bill-as-paid="markBillAsPaid"
+                  />
+                </div>
+              </q-expansion-item>
+            </BillCard>
           </div>
         </div>
       </q-card-section>
@@ -123,6 +143,7 @@ import { useMenuStore } from 'src/stores/menu.store';
 import { useTagStore } from 'src/stores/tag.store';
 import UserViewEnum from 'src/types/enums/UserView.enum';
 import BillCard from 'src/components/BillCard.vue';
+import BillTagCard from 'src/components/BillTagCard.vue';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -134,6 +155,7 @@ export default defineComponent({
     FormBill,
     FormNotebook,
     BillCard,
+    BillTagCard,
   },
   setup() {
     const userView: Ref<string> = ref(UserViewEnum.DETAIL);

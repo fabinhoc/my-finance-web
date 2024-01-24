@@ -57,6 +57,8 @@ export default {
             edit: 'Editar',
             remove: 'Excluir',
           },
+          total: 'Total',
+          totalPaid: 'Total Pago',
         },
       },
       form: {

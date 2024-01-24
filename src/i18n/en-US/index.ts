@@ -46,6 +46,8 @@ export default {
             edit: 'Edit',
             remove: 'Delete',
           },
+          total: 'Total',
+          totalPaid: 'Total Pago',
         },
       },
       card: {

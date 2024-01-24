@@ -3,50 +3,56 @@
     <q-card-section class="q-mb-none q-pb-none">
       <div class="row">
         <div class="col">
-          <span class="text-h6 text-weight-medium">Cartão Stéfany</span>
+          <span class="text-h6 text-weight-medium">{{ bill?.name }}</span>
         </div>
         <q-space />
-        <div class="col-1 column items-end">
-          <q-icon name="local_offer" class="q-mt-xs"></q-icon>
+        <div v-if="bill?.tag_id" class="col-1 column items-end">
+          <q-icon
+            :style="'color:' + bill.color + '!important;'"
+            name="local_offer"
+            class="q-mt-xs"
+          ></q-icon>
         </div>
       </div>
     </q-card-section>
-    <q-card-section class="q-pt-none">
-      <div class="text-subtitle2 text-weight-regular text-grey-6">Pendente</div>
-      <p class="text-weight-regular">Total: R$ 2.000,00</p>
-    </q-card-section>
-    <q-card-section class="q-pb-none">
-      <div class="row">
-        <div class="col">
-          <span class="text-subtitle1 text-weight-light text-grey-7"
-            >Cartão Nubank</span
-          >
-        </div>
-        <q-space />
-        <div class="col-1 column items-end">
-          <span class="text-primary">
-            PG
-            <q-tooltip
-              anchor="bottom middle"
-              transition-show="flip-right"
-              transition-hide="flip-left"
-            >
-              {{ $t('page.notebook.card.bills.tooltips.paid') }}
-            </q-tooltip>
-          </span>
-        </div>
+    <q-card-section class="q-pb-none q-pt-none">
+      <span class="text-primary" v-if="bill?.is_paid">
+        PG
+        <q-tooltip
+          anchor="bottom middle"
+          transition-show="flip-right"
+          transition-hide="flip-left"
+        >
+          {{ $t('page.notebook.card.bills.tooltips.paid') }}
+        </q-tooltip>
+      </span>
+      <div v-else class="text-subtitle2 text-weight-regular text-grey-6">
+        {{ $t('page.notebook.card.bills.tooltips.pending') }}
       </div>
-    </q-card-section>
-    <q-card-section class="q-pt-none q-pb-none">
       <div class="text-weight-regular">
-        <span>R$ 2000,00</span>
-        <q-icon name="calendar_month" class="q-ml-sm"></q-icon>
-        <span>25/01/2024</span>
+        <span>{{ $n(parseFloat(bill?.price), 'currency') }}</span>
+        <q-icon
+          v-if="!bill?.tag_id"
+          name="calendar_month"
+          class="q-ml-sm"
+        ></q-icon>
+        <span v-if="!bill?.tag_id">{{ formatDateString(bill?.due_date) }}</span>
       </div>
     </q-card-section>
-    <q-card-section class="q-pt-none">
+    <q-card-section
+      class="q-pt-none"
+      style="padding-bottom: 19px"
+      v-if="!bill?.tag_id"
+    >
       <div>
-        <q-btn flat round icon="check" :color="'positive'" size="sm">
+        <q-btn
+          flat
+          round
+          icon="check"
+          :color="'positive'"
+          size="sm"
+          @click="markBillAsPaid(bill?.id)"
+        >
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -55,7 +61,14 @@
             {{ $t('page.notebook.card.bills.tooltips.markAsPaid') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="edit" color="info" size="sm">
+        <q-btn
+          flat
+          round
+          icon="edit"
+          color="info"
+          size="sm"
+          @click="editBillEvent(bill?.id)"
+        >
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -64,7 +77,14 @@
             {{ $t('page.notebook.card.bills.tooltips.edit') }}
           </q-tooltip>
         </q-btn>
-        <q-btn flat round icon="delete" color="negative" size="sm">
+        <q-btn
+          flat
+          round
+          icon="delete"
+          color="negative"
+          size="sm"
+          @click="deleteBillEvent(bill?.id)"
+        >
           <q-tooltip
             anchor="bottom middle"
             transition-show="flip-right"
@@ -75,71 +95,25 @@
         </q-btn>
       </div>
     </q-card-section>
-    <q-separator class="q-mt-sm" inset />
-    <q-card-section class="q-pb-none">
-      <div class="row">
-        <div class="col">
-          <span class="text-body2 text-weight-light text-grey-7"
-            >Cartão Banco do Brasil</span
-          >
-        </div>
-        <q-space />
-        <div class="col-1 column items-end">
-          <!-- <span class="text-primary">
-            PG
-            <q-tooltip
-              anchor="bottom middle"
-              transition-show="flip-right"
-              transition-hide="flip-left"
-            >
-              {{ $t('page.notebook.card.bills.tooltips.paid') }}
-            </q-tooltip>
-          </span> -->
-        </div>
-      </div>
-    </q-card-section>
-    <q-card-section class="q-pt-none q-pb-none">
-      <div style="font-size: 0.75rem" class="text-weight-regular">
-        <span>R$ 2000,00</span>
-        <q-icon name="calendar_month" class="q-ml-sm"></q-icon>
-        <span>25/01/2024</span>
-      </div>
-    </q-card-section>
-    <q-card-section class="q-pt-none">
-      <div>
-        <q-btn flat round icon="check" :color="'positive'" size="sm">
-          <q-tooltip
-            anchor="bottom middle"
-            transition-show="flip-right"
-            transition-hide="flip-left"
-          >
-            {{ $t('page.notebook.card.bills.tooltips.markAsPaid') }}
-          </q-tooltip>
-        </q-btn>
-        <q-btn flat round icon="edit" color="info" size="sm">
-          <q-tooltip
-            anchor="bottom middle"
-            transition-show="flip-right"
-            transition-hide="flip-left"
-          >
-            {{ $t('page.notebook.card.bills.tooltips.edit') }}
-          </q-tooltip>
-        </q-btn>
-        <q-btn flat round icon="delete" color="negative" size="sm">
-          <q-tooltip
-            anchor="bottom middle"
-            transition-show="flip-right"
-            transition-hide="flip-left"
-          >
-            {{ $t('page.notebook.card.bills.tooltips.remove') }}
-          </q-tooltip>
-        </q-btn>
-      </div>
-    </q-card-section>
+    <slot />
+    <!-- <div v-for="tagBill in bill?.bills" :key="tagBill.id">
+      <BillTagCard
+        :tagBill="tagBill"
+        @edit-bill-event="editBillEvent"
+        @delete-bill-event="deleteBillEvent"
+        @mark-bill-as-paid="markBillAsPaid"
+      />
+    </div> -->
     <q-card-section>
       <div style="font-size: 0.75rem" class="text-weight-regular">
-        <div class="text-weight-regular">Total Pago:</div>
-        <span class="text-subtitle1 text-weight-medium">R$ 2000,00</span>
+        <div class="text-weight-regular">
+          {{ $t('page.notebook.card.bills.totalPaid') }}:
+        </div>
+        <span class="text-subtitle1 text-weight-medium">{{
+          bill?.total_paid
+            ? $n(parseFloat(bill?.total_paid), 'currency')
+            : $n(parseFloat('0'), 'currency')
+        }}</span>
       </div>
     </q-card-section>
   </q-card>
@@ -147,11 +121,41 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import dateHelper from 'src/helpers/date.helper';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'BillCard',
-  setup() {
-    return {};
+  emits: ['editBillEvent', 'deleteBillEvent', 'markBillAsPaid'],
+  components: {},
+  props: {
+    bill: {
+      type: Object,
+      required: true,
+      default: Object,
+    },
+  },
+  setup(props, { emit }) {
+    const { locale } = useI18n();
+    const editBillEvent = (id: number) => {
+      emit('editBillEvent', id);
+    };
+    const deleteBillEvent = (id: number) => {
+      emit('deleteBillEvent', id);
+    };
+    const markBillAsPaid = (id: number) => {
+      emit('markBillAsPaid', id);
+    };
+    const formatDateString = (dateString: string) => {
+      return dateHelper.formatDateToText(dateString, locale.value);
+    };
+
+    return {
+      editBillEvent,
+      deleteBillEvent,
+      markBillAsPaid,
+      formatDateString,
+    };
   },
 });
 </script>
