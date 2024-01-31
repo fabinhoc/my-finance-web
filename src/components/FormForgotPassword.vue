@@ -17,6 +17,7 @@
       class="full-width"
       color="primary"
       :disable="v$.$invalid"
+      :loading="loadingRequest"
     />
   </q-form>
 </template>
@@ -45,6 +46,7 @@ export default defineComponent({
     const router = useRouter();
     const notify = useNotify();
     const { t } = useI18n();
+    const loadingRequest: Ref<boolean> = ref(false);
 
     const handlePwd = () => {
       isPwd.value = !isPwd.value;
@@ -52,9 +54,11 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       try {
+        loadingRequest.value = true;
         const validate = await v$.value.$validate();
         if (!validate) return false;
         await service.forgotPassword(form.value);
+        loadingRequest.value = false;
         router.push({ name: 'resetPasswordConfirmation' });
       } catch (error: any) {
         if (error.response) {
@@ -74,6 +78,7 @@ export default defineComponent({
       isPwd,
       handlePwd,
       handleSubmit,
+      loadingRequest,
     };
   },
 });

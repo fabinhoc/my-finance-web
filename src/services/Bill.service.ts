@@ -1,5 +1,6 @@
 import useApi from 'src/composables/UseApi';
 import { api } from 'boot/axios';
+import { DuplicateBillType } from 'src/types/DuplicateBill.type';
 
 export default function billService() {
   const { get, post, put, remove, all } = useApi('bill');
@@ -16,6 +17,15 @@ export default function billService() {
     }
   };
 
+  const duplicateBill = async (payload: DuplicateBillType) => {
+    try {
+      const { data } = await api.post('bill/duplicate', payload);
+      return data.data;
+    } catch (error: any | unknown) {
+      throw error;
+    }
+  };
+
   return {
     get,
     post,
@@ -23,5 +33,6 @@ export default function billService() {
     remove,
     all,
     findByNotebookIdAndYearAndMonth,
+    duplicateBill,
   };
 }

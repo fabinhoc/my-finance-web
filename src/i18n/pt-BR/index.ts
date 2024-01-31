@@ -91,6 +91,11 @@ export default {
           name: 'Name',
           color: 'Color',
         },
+        duplicateBill: {
+          formTitle: 'Duplicar contas',
+          selectMonth: 'Duplicar para o mês',
+          selectYear: 'Duplicar para o ano',
+        },
       },
       confirmText: 'Confirmar ação',
       confirmMessage: 'Tem certeza de que deseja excluir?',
@@ -180,6 +185,7 @@ export default {
     },
     passwordConfirmation: 'Senha e confirmação de senha não conferem',
     date: 'Data inválida',
+    minValue: 'Valor mínimo é inválido. Valor mínimo é {minValue}',
   },
   months: {
     january: 'Janeiro',

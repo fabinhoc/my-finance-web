@@ -42,7 +42,14 @@
           fab
           @click="toggleUserView(UserViewEnum.LIST)"
         />
-        <q-btn icon="content_copy" flat fab color="primary" />
+        <q-btn
+          icon="content_copy"
+          flat
+          fab
+          color="primary"
+          @click="dialogDuplicateBill = true"
+        />
+        <q-btn icon="delete" flat fab color="negative" />
       </q-card-section>
       <q-card-section
         padding
@@ -113,6 +120,16 @@
     >
       <FormNotebook @toggleDialog="toogleNotebookDialog" :notebook="notebook" />
     </q-dialog>
+
+    <q-dialog
+      v-model="dialogDuplicateBill"
+      persistent
+      :maximized="$q.platform.is.mobile"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <FormDuplicateBill @toggleDialog="dialogDuplicateBill = false" />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -144,6 +161,7 @@ import { useTagStore } from 'src/stores/tag.store';
 import UserViewEnum from 'src/types/enums/UserView.enum';
 import BillCard from 'src/components/BillCard.vue';
 import BillTagCard from 'src/components/BillTagCard.vue';
+import FormDuplicateBill from 'src/components/FormDuplicateBill.vue';
 
 export default defineComponent({
   name: 'NotebookPage',
@@ -156,6 +174,7 @@ export default defineComponent({
     FormNotebook,
     BillCard,
     BillTagCard,
+    FormDuplicateBill,
   },
   setup() {
     const slide = ref('style');
@@ -180,6 +199,7 @@ export default defineComponent({
     const { setUpdateMenuNotebook } = useMenuStore();
     const { isRemovedTag } = storeToRefs(useTagStore());
     const { setIsRemovedTag } = useTagStore();
+    const dialogDuplicateBill: Ref<boolean> = ref(false);
 
     onMounted(() => {
       if (month.value) {
@@ -230,7 +250,7 @@ export default defineComponent({
     };
 
     const getGroupedBillsByTag = (bills: BillType[]) => {
-      return lodash.groupBy(bills, (bill: BillType) => bill.tag?.id);
+      return lodash.groupBy(bills, (bill: BillType) => bill.tag_id);
     };
 
     const inverseTaggableBills = (bills: any) => {
@@ -374,6 +394,7 @@ export default defineComponent({
       userView,
       toggleUserView,
       UserViewEnum,
+      dialogDuplicateBill,
     };
   },
 });

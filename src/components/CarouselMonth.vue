@@ -28,6 +28,7 @@
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { MonthType } from 'src/types/Month.type';
 import { useMonth } from 'src/stores/month.store';
+import { storeToRefs } from 'pinia';
 
 const months = [
   {
@@ -91,14 +92,24 @@ export default defineComponent({
     const formattedMonth = addLeadingZeroMonth(currentMonth);
     const slide = ref(formattedMonth);
     const { setMonth } = useMonth();
+    const { month } = storeToRefs(useMonth());
 
     onMounted(() => {
       setMonthToStoreValue(slide.value);
     });
 
-    watch(slide, (newValue) => {
-      setMonthToStoreValue(newValue);
-    });
+    watch(
+      [slide, month],
+      async ([newValue, newMonth], [oldValue, oldMonth]) => {
+        if (newMonth.monthInNumber !== oldMonth.monthInNumber) {
+          slide.value = newMonth.monthInNumber;
+        }
+        if (newValue !== oldValue) {
+          slide.value = newValue;
+        }
+        setMonthToStoreValue(newValue);
+      }
+    );
 
     const setMonthToStoreValue = (monthValueInNumber: string) => {
       const selectedMonth = months.find(

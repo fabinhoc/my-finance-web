@@ -93,6 +93,11 @@ export default {
           name: 'Name',
           color: 'Color',
         },
+        duplicateBill: {
+          formTitle: 'Duplicate bills',
+          selectMonth: 'Double for the month',
+          selectYear: 'Double for the year',
+        },
       },
       confirmText: 'Confirm',
       confirmMessage: 'Are you sure you want to delete?',
@@ -179,6 +184,7 @@ export default {
     },
     passwordConfirmation: 'Password e Password Confirmation do not match',
     date: 'Invalid date',
+    minValue: 'Minimum value is invalid. Minimum value is {minValue}',
   },
   months: {
     january: 'January',

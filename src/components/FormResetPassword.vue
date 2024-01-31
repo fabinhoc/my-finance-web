@@ -44,6 +44,7 @@
       class="full-width"
       color="primary"
       :disable="v$.$invalid"
+      :loading="loadingRequest"
     />
   </q-form>
 </template>
@@ -83,6 +84,7 @@ export default defineComponent({
     const router = useRouter();
     const countDown: Ref<number> = ref(3);
     const { t } = useI18n();
+    const loadingRequest: Ref<boolean> = ref(false);
 
     onMounted(() => {
       form.value.token = (route.query.token as string) ?? null;
@@ -118,10 +120,12 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       try {
+        loadingRequest.value = true;
         const validate = await v$.value.$validate();
         if (!validate) return false;
         await service.resetPassword(form.value);
         startCountdown();
+        loadingRequest.value = false;
         setTimeout(() => {
           router.push({ name: 'login' });
         }, 3000);
@@ -139,6 +143,7 @@ export default defineComponent({
       handleSubmit,
       isPwdConfirm,
       handlePwdConfirm,
+      loadingRequest,
     };
   },
 });
