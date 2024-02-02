@@ -49,7 +49,7 @@
           color="primary"
           @click="dialogDuplicateBill = true"
         />
-        <q-btn icon="delete" flat fab color="negative" />
+        <q-btn icon="delete" flat fab color="negative" @click="destroyMany" />
       </q-card-section>
       <q-card-section
         padding
@@ -375,6 +375,33 @@ export default defineComponent({
       userView.value = value;
     };
 
+    const destroyMany = () => {
+      const title = t('page.notebook.confirmText');
+      const message = t('page.notebook.confirmMessage');
+      $q.dialog({
+        title: title,
+        message: message,
+        cancel: {
+          text: t('page.notebook.cancel'),
+        },
+        persistent: true,
+      }).onOk(async () => {
+        if (notebook.value) {
+          const notebookId: string =
+            typeof route.params.id === 'object'
+              ? route.params.id[0]
+              : route.params.id;
+          await billService.destroyMany(
+            parseInt(notebookId),
+            year.value,
+            month.value.monthInNumber
+          );
+          notify.success(t('success'));
+          setBills(month.value, year.value);
+        }
+      });
+    };
+
     return {
       slide,
       bills,
@@ -395,6 +422,7 @@ export default defineComponent({
       toggleUserView,
       UserViewEnum,
       dialogDuplicateBill,
+      destroyMany,
     };
   },
 });

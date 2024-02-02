@@ -26,6 +26,21 @@ export default function billService() {
     }
   };
 
+  const destroyMany = async (
+    notebookId: number,
+    year: number,
+    month: string
+  ) => {
+    try {
+      const { data } = await api.delete(
+        `bill/delete/${notebookId}/${year}/${month}`
+      );
+      return data.data;
+    } catch (error: any | unknown) {
+      throw error;
+    }
+  };
+
   return {
     get,
     post,
@@ -34,5 +49,6 @@ export default function billService() {
     all,
     findByNotebookIdAndYearAndMonth,
     duplicateBill,
+    destroyMany,
   };
 }
