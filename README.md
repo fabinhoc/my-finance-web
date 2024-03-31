@@ -1,43 +1,63 @@
-# Let's control your finances (my-finance-web)
+# My Finance Web
 
-Let's control your financesss
+Este é um projeto de aplicação web para controle financeiro pessoal. Permite aos usuários registrar suas despesas e receitas, categorizá-las e visualizar relatórios detalhados para ajudar na gestão financeira.
 
-## Install the dependencies
+## Funcionalidades
 
-```bash
-yarn
-# or
-npm install
-```
+- **Registro de Despesas e Receitas:** Os usuários podem adicionar suas transações financeiras, incluindo informações como valor, data e descrição.
+- **Categorização:** As transações podem ser categorizadas para uma melhor organização e análise.
+- **Segurança:** O projeto implementa medidas de segurança para proteger as informações financeiras dos usuários.
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+## Tecnologias Utilizadas
 
-```bash
-quasar dev
-```
+- **Frontend:** HTML, CSS, JavaScript (Quasar Framework)
+- **Backend:** Laravel - Repositorio da API [FAccount](https://github.com/fabinhoc/faccount)
 
-### Lint the files
+## Instalação e Uso
 
-```bash
-yarn lint
-# or
-npm run lint
-```
+1. **Clone o Repositório:**
 
-### Format the files
+   ```bash
+   git clone https://github.com/fabinhoc/my-finance-web.git
+   ```
 
-```bash
-yarn format
-# or
-npm run format
-```
+2. **Instale as Dependências:**
 
-### Build the app for production
+   ```bash
+    yarn
+    # or
+    npm install
+   ```
 
-```bash
-quasar build
-```
+3. **Iniciar projeto em modo de desenvolvimento:**
 
-### Customize the configuration
+   ```bash
+    yarn quasar dev
+   ```
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+4. **Executar Lint nos arquivos:**
+
+   ```bash
+    yarn lint
+    # or
+    npm run lint
+   ```
+
+5. **Formatar os arquivos:**
+   ```bash
+    yarn format
+    # or
+    npm run format
+   ```
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request para melhorar este projeto.
+
+## Licença
+
+Este projeto está licenciado sob a MIT. Consulte o arquivo [LICENSE](LICENSE.md) para obter mais detalhes.
+
+## Contato
+
+Para mais informações, entre em contato com Fabio Cruz em fainhocosta1202@gmail.com.
